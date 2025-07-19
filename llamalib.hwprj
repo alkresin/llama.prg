@@ -1,0 +1,114 @@
+# Llama libraries build script
+{win}c_compiler=msvc64
+makemode=on
+objpath=obj
+outpath=lib
+
+{win}$C_FL=/nologo /W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D GGML_SCHED_MAX_COPIES=4 /D _XOPEN_SOURCE=600 /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c11 /external:W3 /Gd /TC  /utf-8 /bigobj -Illama.cpp\include /D GGML_VERSION=\"0.0.5850\" /D GGML_COMMIT=\"20b7bf8a\"
+{win}$C_FL2=/nologo /W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D GGML_SCHED_MAX_COPIES=4 /D _XOPEN_SOURCE=600 /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c11 /external:W3 /Gd /TC /utf-8 /bigobj /arch:AVX2 /openmp /D GGML_USE_OPENMP /D GGML_USE_LLAMAFILE /D GGML_USE_CPU_AARCH64 /D GGML_AVX2 /D GGML_FMA /D GGML_F16C -Illama.cpp\include -Illama.cpp\ggml-cpu
+{win}$CPP_FL=/nologo /W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D GGML_USE_CPU /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /external:W3 /Gd /TP  /utf-8 /bigobj -Illama.cpp\include -Illama.cpp\common
+{win}$CPP_FL2=/nologo /W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /external:W3 /Gd /TP /utf-8 /bigobj /openmp /arch:AVX2 /D GGML_SCHED_MAX_COPIES=4 /D _XOPEN_SOURCE=600 /D GGML_USE_OPENMP /D GGML_USE_LLAMAFILE /D GGML_USE_CPU_AARCH64 /D GGML_AVX2 /D GGML_FMA /D GGML_F16C -Illama.cpp\include -Illama.cpp\common -Illama.cpp\ggml-cpu
+{unix}$C_FL=-DGGML_USE_CPU -DGGML_SCHED_MAX_COPIES=4 -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_base_EXPORTS -Iinclude -Iggml\src -Iggml\include -Iggml\src\ggml-cpu -Icommon -O3 -DNDEBUG -fPIC -Wshadow -Wstrict-prototypes -Wpointer-arith -Wmissing-prototypes -Werror=implicit-int -Werror=implicit-function-declaration -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wdouble-promotion -std=gnu11 -Illama.cpp/include -Illama.cpp/ggml/src -Illama.cpp/ggml/include -Illama.cpp/ggml/src/ggml-cpu -DGGML_VERSION=\"0.0.5850\" -DGGML_COMMIT=\"20b7bf8a\"
+#{unix}$C_FL2=-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_AARCH64 -DGGML_USE_LLAMAFILE -DGGML_USE_OPENMP -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS -O3 -DNDEBUG -fPIC -Wshadow -Wstrict-prototypes -Wpointer-arith -Wmissing-prototypes -Werror=implicit-int -Werror=implicit-function-declaration -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wdouble-promotion -march=native -fopenmp -std=gnu11 -Illama.cpp/include -Illama.cpp/ggml/src -Illama.cpp/ggml/include -Illama.cpp/ggml/src/ggml-cpu -Illama.cpp/ggml-cpu
+{unix}$C_FL2=-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_AARCH64 -DGGML_USE_LLAMAFILE -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS -O3 -DNDEBUG -fPIC -Wshadow -Wstrict-prototypes -Wpointer-arith -Wmissing-prototypes -Werror=implicit-int -Werror=implicit-function-declaration -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wdouble-promotion -march=native -std=gnu11 -Illama.cpp/include -Illama.cpp/ggml/src -Illama.cpp/ggml/include -Illama.cpp/ggml/src/ggml-cpu -Illama.cpp/ggml-cpu
+{unix}$CPP_FL=-DGGML_USE_CPU -DGGML_SCHED_MAX_COPIES=4 -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_base_EXPORTS -Iggml/src -Iinclude -Iggml\src -Iggml\include -Iggml\src\ggml-cpu -Icommon -O3 -DNDEBUG -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -std=gnu++17 -Illama.cpp/include -Illama.cpp/ggml/src -Illama.cpp/ggml/include -Illama.cpp/ggml/src/ggml-cpu -Illama.cpp/common
+#{unix}$CPP_FL2=-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_AARCH64 -DGGML_USE_LLAMAFILE -DGGML_USE_OPENMP -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS -O3 -DNDEBUG -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -march=native -fopenmp -std=gnu++17 -Illama.cpp/include -Illama.cpp/ggml/src -Illama.cpp/ggml/include -Illama.cpp/ggml/src/ggml-cpu -Illama.cpp/common -Illama.cpp/ggml-cpu
+{unix}$CPP_FL2=-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_AARCH64 -DGGML_USE_LLAMAFILE -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS -O3 -DNDEBUG -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -march=native -std=gnu++17 -Illama.cpp/include -Illama.cpp/ggml/src -Illama.cpp/ggml/include -Illama.cpp/ggml/src/ggml-cpu -Illama.cpp/common -Illama.cpp/ggml-cpu
+
+# ggml.lib
+:project ggml
+
+target=lib
+outname=ggml
+guilib=
+
+srcpath=llama.cpp
+
+ggml.c $C_FL
+ggml-alloc.c $C_FL
+ggml-backend.cpp $CPP_FL
+ggml-opt.cpp $CPP_FL
+ggml-threading.cpp $CPP_FL
+ggml-quants.c $C_FL
+gguf.cpp $CPP_FL
+ggml-backend-reg.cpp $CPP_FL
+
+srcpath=llama.cpp\ggml-cpu
+ggml-cpu2.cpp $CPP_FL2
+ggml-cpu.c $C_FL2
+#ggml-cpu-aarch64.cpp $CPP_FL2
+hbm.cpp $CPP_FL2
+quants.c $C_FL2
+traits.cpp $CPP_FL2
+ops.cpp $CPP_FL2
+vec.cpp $CPP_FL2
+binary-ops.cpp $CPP_FL2
+unary-ops.cpp $CPP_FL2
+
+srcpath=llama.cpp\ggml-cpu\amx
+amx.cpp $CPP_FL2
+mmq.cpp $CPP_FL2
+
+srcpath=llama.cpp\ggml-cpu\arch\x86
+cpu-feats.cpp $CPP_FL2
+quants_arch.c $C_FL2
+repack.cpp $CPP_FL2
+
+srcpath=llama.cpp\ggml-cpu\llamafile
+sgemm.cpp $CPP_FL2
+
+# llama.lib
+:project llama
+
+target=lib
+outname=llama
+guilib=
+
+srcpath=source
+
+cllama.cpp $CPP_FL
+hllama.c
+hcommon.c $C_FL2
+
+srcpath=llama.cpp
+llama.cpp $CPP_FL
+llama-adapter.cpp $CPP_FL
+llama-arch.cpp $CPP_FL
+llama-batch.cpp $CPP_FL
+llama-chat.cpp $CPP_FL
+llama-context.cpp $CPP_FL
+llama-grammar.cpp $CPP_FL
+llama-graph.cpp $CPP_FL
+llama-hparams.cpp $CPP_FL
+llama-impl.cpp $CPP_FL
+llama-io.cpp $CPP_FL
+llama-kv-cache-unified.cpp $CPP_FL
+llama-kv-cache-unified-iswa.cpp $CPP_FL
+llama-memory.cpp $CPP_FL
+llama-mmap.cpp $CPP_FL
+llama-model.cpp $CPP_FL
+llama-model-loader.cpp $CPP_FL
+llama-quant.cpp $CPP_FL
+llama-sampling.cpp $CPP_FL
+llama-vocab.cpp $CPP_FL
+unicode.cpp $CPP_FL
+unicode-data.cpp $CPP_FL
+llama-model-saver.cpp $CPP_FL
+llama-memory-recurrent.cpp $CPP_FL
+llama-memory-hybrid.cpp $CPP_FL
+
+srcpath=llama.cpp\common
+build-info.cpp $CPP_FL
+arg.cpp $CPP_FL -Illama.cpp/include/nlohmann
+chat.cpp $CPP_FL -Illama.cpp/include/nlohmann
+common.cpp $CPP_FL
+console.cpp $CPP_FL
+json-schema-to-grammar.cpp $CPP_FL -Illama.cpp/include/nlohmann
+llguidance.cpp $CPP_FL
+log.cpp $CPP_FL
+ngram-cache.cpp $CPP_FL
+sampling.cpp $CPP_FL
+speculative.cpp $CPP_FL
+chat-parser.cpp $CPP_FL
+json-partial.cpp $CPP_FL
+regex-partial.cpp $CPP_FL
