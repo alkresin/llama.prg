@@ -257,6 +257,8 @@ int llm_ask( const char * szPrompt ) {
 
 const char * llm_getnexttoken( void ) {
 
+   bool bOut = false;
+
    if( !embd.empty() ) {
       // Note: (n_ctx - 4) here is to match the logic for commandline prompt handling via
       // --prompt or --file which uses the same value.
@@ -314,6 +316,7 @@ const char * llm_getnexttoken( void ) {
       common_sampler_accept(smpl, id, /* accept_grammar= */ true);
       embd.push_back(id);
 
+      bOut = true;
       --n_remain;         // decrement remaining sampling budget
    } else {
       // some user input remains from prompt or interaction, forward it to processing
@@ -333,8 +336,10 @@ const char * llm_getnexttoken( void ) {
 
    // display text
    std::string sRes;
-   for (auto id : embd) {
-      sRes += common_token_to_piece(ctx, id, params.special);
+   if( bOut ) {
+      for (auto id : embd) {
+         sRes += common_token_to_piece(ctx, id, params.special);
+      }
    }
 
    // if not currently processing queued inputs;

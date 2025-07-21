@@ -65,10 +65,12 @@ Function Main( cParams )
          llm_Ask( cQue )
          cAnswer := ""
          DO WHILE ( cAns := llm_GetNextToken() ) != Nil
-            //writelog( cAns )
-            cAns := hb_Utf8ToStr( cAns, "RU866" )
-            cAnswer += cAns
-            ?? cAns
+            IF !Empty( cAns )
+               //writelog( cAns )
+               cAns := hb_Utf8ToStr( cAns, "RU866" )
+               cAnswer += cAns
+               ?? cAns
+            ENDIF
             IF Inkey() == 27
                EXIT
             ENDIF

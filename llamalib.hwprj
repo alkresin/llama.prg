@@ -63,7 +63,7 @@ guilib=
 
 srcpath=source
 cllama.cpp $CPP_FL
-hllama.c
+hllama.c $C_FL
 hcommon.c $C_FL2
 
 srcpath=llama.cpp
