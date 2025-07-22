@@ -119,23 +119,27 @@ int llm_open_model( int argc, char **argv ) {
    }
    vocab = llama_model_get_vocab( model );
 
+   // Should not run without any tokens
+   embd_inp.clear();
+   const bool add_bos = llama_vocab_get_add_bos( vocab ) && !params.use_jinja;
+   if( add_bos ) {
+       embd_inp.push_back(llama_vocab_bos(vocab));
+   } else {
+       return 4;
+   }
+
+   // number of tokens to keep when resetting context
+   if (params.n_keep < 0 || params.n_keep > (int) embd_inp.size()) {
+       params.n_keep = (int)embd_inp.size();
+   } else {
+       params.n_keep += add_bos; // always keep the BOS token
+   }
+
    return 0;
 }
 
 int llm_create_context( void ) {
-/*
-   llama_context_params ctx_params = llama_context_default_params();
-   // n_ctx is the context size
-   ctx_params.n_ctx = 256;
-   // n_batch is the maximum number of tokens that can be processed in a single call to llama_decode
-   ctx_params.n_batch = 64;
-   // enable performance counters
-   ctx_params.no_perf = false;
 
-   ctx = llama_init_from_model(model, ctx_params);
-*/
-
-   /* ctx = llama_init.context.get(); */
    auto cparams = common_context_params_to_llama( params );
    ctx = llama_init_from_model( model, cparams );
 
@@ -144,12 +148,6 @@ int llm_create_context( void ) {
    }
 
    // initialize the sampler
-/*
-   auto sparams = llama_sampler_chain_default_params();
-   sparams.no_perf = true;
-   smpl = llama_sampler_chain_init(sparams);
-   llama_sampler_chain_add(smpl, llama_sampler_init_greedy());
-*/
 
    auto & sparams = params.sampling;
    smpl = common_sampler_init( model, sparams );

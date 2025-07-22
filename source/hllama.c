@@ -29,11 +29,48 @@ extern void llm_close_context( void );
 HB_FUNC( LLM_OPEN_MODEL )
 {
 
+   char ** argv;
    char *p1 = "", *p2 = "-m", *p3 = (char*) hb_parc(1);
-   char ** argv = (char **) malloc( sizeof(char*) * 3 );
+   char *params = (char*) (HB_ISCHAR(2)? hb_parc(2) : NULL), *ptr, *ptr1, c;
+   int argc = 3, i;
+
+   if( params ) {
+      // Counting the number of parameters
+      ptr = params;
+      while( *ptr ) {
+         c = *ptr;
+         if( c == '=' )
+            argc ++;
+         else if( c == ' ' ) {
+            argc ++;
+            while( *ptr && *ptr == ' ' )
+               ptr ++;
+         }
+         ptr ++;
+      }
+   }
+
+   argv = (char **) malloc( sizeof(char*) * argc );
    argv[0] = p1; argv[1] = p2; argv[2] = p3;
 
-   if( llm_open_model( 3, argv ) ) {
+   if( params ) {
+      //
+      ptr1 = ptr = params;
+      i = 3;
+      while( *ptr ) {
+         c = *ptr;
+         if( c == '=' ) {
+            argv[i] = (char*) malloc( ptr - ptr1 + 2 );
+            argv[i][0] = '-';
+         } else if( c == ' ' ) {
+            while( *ptr && *ptr == ' ' )
+               ptr ++;
+         }
+         ptr ++;
+      }
+   }
+
+   if( llm_open_model( argc, argv ) ) {
       hb_retni( 1 );
       return;
    }
