@@ -5,6 +5,12 @@
  * Copyright 2025 Alexander S.Kresin <alex@kresin.ru>
  * www - http://www.kresin.ru
  *
+ * Usage:
+ *   test [cParamsString]
+ * cParamsString must be in quotes and may use the following model parameters:
+ * -c, -n, -temp, --repeat-penalty, --top-k, --top-p, --keep, --min-p
+ * for example:
+ *   test2 "-c 2048 -n 256 --temp 0.8"
 */
 
 #include "inkey.ch"
@@ -18,7 +24,7 @@ STATIC aHis := {}, nHisCurr := 0
 Function Main( cParams )
 
    LOCAL cQue, cAns, cAnswer
-   LOCAL i, nKey, n2
+   LOCAL i, nKey, n2, nErr
 
    hb_cdpSelect( "RU866" )
 
@@ -35,8 +41,11 @@ Function Main( cParams )
    ? hb_fnameName( aModels[i,1] ) + "   Loading..."
 
    n2 := llm_rediron( 2, "stderr.log" )
-   IF llm_Open_Model( aModels[i,1] ) != 0
-      ? " === Can't open " + aModels[i,1] + " ==="
+   IF ( nErr := llm_Open_Model( aModels[i,1], cParams ) ) != 0
+      ? "Can't open " + aModels[i,1] + " (" + Ltrim(Str(nErr)) + ")"
+      IF nErr == 2
+         ? "Wrong parameters"
+      ENDIF
       RETURN Nil
    ENDIF
 

@@ -93,7 +93,13 @@ int llm_open_model( int argc, char **argv ) {
    ggml_backend_load_all();
    model = llama_model_load_from_file( argv[2], model_params );
 */
-
+/*
+   int i;
+   llm_writelog( NULL, "argc: %d\n", argc );
+   for( i = 1; i < argc; i ++ );
+      llm_writelog( NULL, "%s\n", argv[i] );
+   llm_writelog( NULL, "====\n" );
+*/
    if( !common_params_parse( argc, argv, params, LLAMA_EXAMPLE_MAIN, NULL ) )
       return 2;
 
@@ -125,6 +131,8 @@ int llm_open_model( int argc, char **argv ) {
    if( add_bos ) {
        embd_inp.push_back(llama_vocab_bos(vocab));
    } else {
+       llama_model_free( model );
+       model = nullptr;
        return 4;
    }
 

@@ -31,23 +31,25 @@ HB_FUNC( LLM_OPEN_MODEL )
 
    char ** argv;
    char *p1 = "", *p2 = "-m", *p3 = (char*) hb_parc(1);
-   char *params = (char*) (HB_ISCHAR(2)? hb_parc(2) : NULL), *ptr, *ptr1, c;
+   char *params = (char*) (HB_ISCHAR(2)? hb_parc(2) : NULL), *ptr, *ptr1;
    int argc = 3, i;
 
    if( params ) {
+      //llm_writelog( NULL, "%s\n", params );
       // Counting the number of parameters
       ptr = params;
+      while( *ptr == ' ' ) ptr ++;
+      ptr1 = ptr;
       while( *ptr ) {
-         c = *ptr;
-         if( c == '=' )
+         if( *ptr == ' ' ) {
             argc ++;
-         else if( c == ' ' ) {
-            argc ++;
-            while( *ptr && *ptr == ' ' )
-               ptr ++;
-         }
-         ptr ++;
+            while( *ptr && *ptr == ' ' )  ptr ++;
+            ptr1 = ptr;
+         } else
+            ptr ++;
       }
+      if( ptr > ptr1 )
+         argc ++;
    }
 
    argv = (char **) malloc( sizeof(char*) * argc );
@@ -55,23 +57,36 @@ HB_FUNC( LLM_OPEN_MODEL )
 
    if( params ) {
       //
-      ptr1 = ptr = params;
+      ptr = params;
       i = 3;
+      while( *ptr == ' ' ) ptr ++;
+      ptr1 = ptr;
       while( *ptr ) {
-         c = *ptr;
-         if( c == '=' ) {
-            argv[i] = (char*) malloc( ptr - ptr1 + 2 );
-            argv[i][0] = '-';
-         } else if( c == ' ' ) {
-            while( *ptr && *ptr == ' ' )
-               ptr ++;
-         }
-         ptr ++;
+         if( *ptr == ' ' ) {
+            *ptr = '\0';
+            argv[i] = ptr1;
+            i ++; ptr ++;
+            while( *ptr == ' ' ) ptr ++;
+            ptr1 = ptr;
+         } else
+            ptr ++;
+      }
+      if( ptr > ptr1 ) {
+         argv[i] = ptr1;
+         //llm_writelog( NULL, "%d %s\n", i, argv[i] );
       }
    }
-
-   if( llm_open_model( argc, argv ) ) {
-      hb_retni( 1 );
+/*
+   llm_writelog( NULL, "====\n" );
+   llm_writelog( NULL, "%d\n", argc );
+   for( i = 1; i < argc; i ++ )
+      //llm_writelog( NULL, "%d\n", i );
+      llm_writelog( NULL, "%s\n", argv[i] );
+   llm_writelog( NULL, "====\n" );
+*/
+   i = llm_open_model( argc, argv );
+   if( i ) {
+      hb_retni( i );
       return;
    }
 
