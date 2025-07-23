@@ -1,0 +1,7 @@
+#
+{win}guilib=uni
+
+test_exllm.prg
+
+extcli.prg
+fconnect.prg
