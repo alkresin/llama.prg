@@ -2,8 +2,9 @@
 Harbour bindings to llama,cpp
 
 1. [Quick review](#quick-review)
-2. [Model parameters](#model-parameters)
-3. [Links](#links)
+2. [Functions list](#functions-list)
+3. [Model parameters](#model-parameters)
+4. [Links](#links)
 
 ## Quick review
 
@@ -15,6 +16,45 @@ Under Windows it demands 64-bit MSVC compiler, under Linux/Unix - the standard 6
 The project was started in 2024 and was presented at [Gitflic](https://gitflic.ru/project/alkresin/llama_prg).
 Due to significunt changes in llama.cpp I rewrote the bindings code and posted it on Githib. So,
  this is a next version of llama.prg, which supports the newest (July 2025) llama.cpp.
+
+## Functions list
+
+#### llm_open_model( cModelName[, cParameters] ) --> nSuccess
+The function opens AI model **cModel** with a set of parameters (**cParameters**),
+which is a string with name value pairs, divided by a space:
+
+name1 value1 name2 value2...
+
+See the list of possible parameters in appropriate section of this manual.
+
+Returns value **nSuccess** is 0 if the function has completed successfully.
+
+#### llm_create_context() --> nSuccess
+The function creates the dialog context.
+
+Returns value **nSuccess** is 0 if the function has completed successfully.
+
+#### llm_init_prompt( cPrompt )
+
+#### llm_ask( cQuestion )
+
+#### llm_getnexttoken() --> xResult
+
+#### llm_close_model()
+Closes previously opened model.
+
+#### llm_print_timings()
+
+Prints some time parameters of a dialog.
+
+#### llm_rediron( n, cFile ) --> handle
+
+Redirects output ( **n** = 1 - stdout, **n** = 2 - stderr ) to a file **cFile**, returns file handle.
+
+#### llm_rediroff( n, handle )
+
+Cancel output redirection ( **n** = 1 - stdout, **n** = 2 - stderr ), **handle** - a file handle, returned by llm_rediron().
+
 
 ## Model parameters
 

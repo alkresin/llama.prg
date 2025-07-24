@@ -59,6 +59,7 @@ int llm_ask( const char * szPrompt );
 const char * llm_getnexttoken( void );
 void llm_close_model( void );
 void llm_close_context( void );
+void llm_print_timings( void );
 
 void llm_writelog( const char * sFile, const char * sTraceMsg, ... ) {
    FILE *hFile;
@@ -385,6 +386,12 @@ void llm_close_model( void ) {
       model = nullptr;
    }
    llama_backend_free();
+}
+
+void llm_print_timings( void ) {
+
+   if( smpl && ctx )
+      common_perf_print( ctx, smpl );
 }
 
 }

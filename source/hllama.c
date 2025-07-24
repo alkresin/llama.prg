@@ -25,6 +25,7 @@ extern int llm_ask( const char * szPrompt );
 extern const char * llm_getnexttoken( void );
 extern void llm_close_model( void );
 extern void llm_close_context( void );
+extern void llm_print_timings( void );
 
 HB_FUNC( LLM_OPEN_MODEL )
 {
@@ -144,4 +145,9 @@ HB_FUNC( LLM_CLOSE_CONTEXT )
 HB_FUNC( LLM_CLOSE_MODEL )
 {
    llm_close_model();
+}
+
+HB_FUNC( LLM_PRINT_TIMINGS )
+{
+   llm_print_timings();
 }
