@@ -11,7 +11,8 @@
 #define S_ASKING          7
 #define S_GETTOKEN        8
 
-#define HPANE_HEIGHT     52
+#define HPANE_H          52
+#define HSPLIT_H          6
 
 #define CLR_WHITE    0xffffff
 #define CLR_BLACK    0
@@ -30,8 +31,9 @@ STATIC oTimer, nInterval := 100
 STATIC aModels := {}, cCurrModel
 STATIC cImgPath, cImgPrefix
 STATIC nLogLevel := 0
-STATIC n_ctx := 512, n_predict := -1, temp := 0.8, penalty_r := 1.1, top_k := 40, top_p := 0.95, penalize_nl := 0, min_p := 0.05
+STATIC n_ctx := 4096, n_predict := -1, temp := 0.8, penalty_r := 1.0, penalty_l := 64, top_k := 40, top_p := 0.95, min_p := 0.05
 STATIC oFontMain
+STATIC cEndl := e"\r\n"
 
 FUNCTION Main
    LOCAL oMain, oBoa, oBtnMod, oBtnAsk, oBtnReset
@@ -48,7 +50,7 @@ FUNCTION Main
 
    INIT WINDOW oMain MAIN TITLE "Llama.prg" AT 200,0 SIZE 600,350 FONT oFontMain
 
-   @ 4, 0 BOARD oBoa OF oMain SIZE oMain:nWidth-12, HPANE_HEIGHT BACKCOLOR CLR_DGRAYA ;
+   @ 4, 0 BOARD oBoa OF oMain SIZE oMain:nWidth-12, HPANE_H BACKCOLOR CLR_DGRAYA ;
       FONT oFontMain ON SIZE {|o,x,y|o:Move( ,, x-12 ) }
       // ANCHOR_LEFTABS+ANCHOR_RIGHTABS
 
@@ -76,12 +78,12 @@ STATIC FUNCTION AddEdit()
    LOCAL oMain := HWindow():Getmain(), oBoa := oMain:oBoa, oEdit1, oEdit2
    LOCAL nWinHeight := hwg_GetClientRect( oMain:handle )[4]
 
-   @ 4, HPANE_HEIGHT HCEDIT oEdit1 OF oMain SIZE oBoa:nWidth, 80 NO VSCROLL ;
+   @ 4, HPANE_H + 4 HCEDIT oEdit1 OF oMain SIZE oBoa:nWidth, 80 NO VSCROLL ;
       ON SIZE ANCHOR_LEFTABS+ANCHOR_RIGHTABS
    oEdit1:bColorCur := oEdit1:bColor
 
-   @ 4, HPANE_HEIGHT + oEdit1:nHeight + 3 HCEDIT oEdit2 OF oMain ;
-      SIZE oBoa:nWidth, nWinHeight - HPANE_HEIGHT - oEdit1:nHeight - 3 - 4 BACKCOLOR CLR_LGRAY1 ;
+   @ 4, HPANE_H + 4 + oEdit1:nHeight + HSPLIT_H HCEDIT oEdit2 OF oMain ;
+      SIZE oBoa:nWidth, nWinHeight - HPANE_H - 4 - oEdit1:nHeight - HSPLIT_H - 4 BACKCOLOR CLR_LGRAY1 ;
       ON SIZE ANCHOR_TOPABS+ANCHOR_BOTTOMABS+ANCHOR_LEFTABS+ANCHOR_RIGHTABS
    oEdit2:bColorCur := oEdit2:bColor
    oEdit2:SetWrap( .T. )
@@ -91,7 +93,7 @@ STATIC FUNCTION AddEdit()
       oEdit2:lUtf8 := .T.
    ENDIF
 
-   @ 4,HPANE_HEIGHT + oEdit1:nHeight SPLITTER OF oMain SIZE oBoa:nWidth,3 ;
+   @ 4,HPANE_H + oEdit1:nHeight SPLITTER OF oMain SIZE oBoa:nWidth,HSPLIT_H ;
       DIVIDE {oEdit1} FROM {oEdit2} ON SIZE ANCHOR_LEFTABS+ANCHOR_RIGHTABS
 
    hwg_SetFocus( oEdit1:handle )
@@ -117,7 +119,7 @@ STATIC FUNCTION RunModule()
 
 STATIC FUNCTION LoadModel()
 
-   LOCAL oDlg, oBoa, lRes := .T., oCombo1, am, i, sParams := ""
+   LOCAL oDlg, oBoa, lRes := .F., oCombo1, am, i, sParams := ""
    LOCAL oEdit1, oEdit2, oEdit5, oEdit6, oEdit7, oEdit8, oEdit9, oEdit10
 
    LOCAL aCorners := { 4,4,4,4 }
@@ -128,35 +130,35 @@ STATIC FUNCTION LoadModel()
       cCurrModel := aModels[oCombo1:Value(),1]
       IF oEdit1:Value != n_ctx
          n_ctx := oEdit1:Value
-         sParams += 'c=' + Ltrim(Str(n_ctx)) + "~"
+         sParams += '-c ' + Ltrim(Str(n_ctx)) + " "
       ENDIF
       IF oEdit2:Value != n_predict
          n_predict := oEdit2:Value
-         sParams += 'n=' + Ltrim(Str(n_predict)) + "~"
+         sParams += '-n ' + Ltrim(Str(n_predict)) + " "
       ENDIF
       IF oEdit5:Value != temp
          temp := oEdit5:Value
-         sParams += 'temp=' + Ltrim(Str(temp)) + "~"
+         sParams += '-temp ' + Ltrim(Str(temp)) + " "
       ENDIF
       IF oEdit6:Value != penalty_r
          penalty_r := oEdit6:Value
-         sParams += 'repeat-penalty=' + Ltrim(Str(penalty_r)) + "~"
+         sParams += '--repeat-penalty ' + Ltrim(Str(penalty_r)) + " "
       ENDIF
       IF oEdit7:Value != top_k
          top_k := oEdit7:Value
-         sParams += 'top-k=' + Ltrim(Str(top_k)) + "~"
+         sParams += '--top-k ' + Ltrim(Str(top_k)) + " "
       ENDIF
       IF oEdit8:Value != top_p
          top_p := oEdit8:Value
-         sParams += 'top-p=' + Ltrim(Str(top_p)) + "~"
+         sParams += '--top-p ' + Ltrim(Str(top_p)) + " "
       ENDIF
       IF oEdit9:Value != min_p
          min_p := oEdit9:Value
-         sParams += 'min-p=' + Ltrim(Str(min_p)) + "~"
+         sParams += '--min-p ' + Ltrim(Str(min_p)) + " "
       ENDIF
-      IF oEdit10:Value != penalize_nl
-         penalize_nl := oEdit10:Value
-         sParams += 'penalize-nl=' + Iif(penalize_nl==0,'0','1') + "~"
+      IF oEdit10:Value != penalty_l
+         penalty_l := oEdit10:Value
+         sParams += '--repeat-last-n ' + Ltrim(Str(penalty_l)) + " "
       ENDIF
       lRes := .T.
       oDlg:Close()
@@ -207,8 +209,8 @@ STATIC FUNCTION LoadModel()
    @ 10, 260 DRAWN SIZE 100, 28 COLOR CLR_WHITE BACKCOLOR CLR_DGRAYA TEXT 'min_p'
    @ 110,260 DRAWN EDIT oEdit9 CAPTION min_p PICTURE "9.99" SIZE 80, 28
 
-   @ 200, 260 DRAWN SIZE 100, 28 COLOR CLR_WHITE BACKCOLOR CLR_DGRAYA TEXT 'penalize_nl'
-   @ 300,260 DRAWN EDIT oEdit10 CAPTION penalize_nl PICTURE "9" SIZE 80, 28
+   @ 200, 260 DRAWN SIZE 100, 28 COLOR CLR_WHITE BACKCOLOR CLR_DGRAYA TEXT 'penalty_l'
+   @ 300,260 DRAWN EDIT oEdit10 CAPTION penalty_l PICTURE "9" SIZE 80, 28
 
    @ 40, oDlg:nHeight - 56 DRAWN SIZE 100, 40 COLOR CLR_WHITE HSTYLES aStyles TEXT 'Ok' ;
       ON CLICK bOk
@@ -226,19 +228,15 @@ STATIC FUNCTION LoadModel()
          AddEdit()
       ENDIF
 
-      IF !Empty( sParams )
-         StatusChanging( S_MODEL_PARAMS )
-         ecli_RunFunc( hExt, "SetParams",{sParams} )
-      ENDIF
       StatusChanging( S_MODEL_LOADING )
-      ecli_RunFunc( hExt, "OpenModel",{cCurrModel}, .T. )
+      ecli_RunFunc( hExt, "OpenModel",{cCurrModel,sParams}, .T. )
    ENDIF
 
    RETURN Nil
 
 STATIC FUNCTION Ask()
 
-   LOCAL o
+   LOCAL o, cQue
 
    IF nStatus < S_MODEL_LOADED
       RETURN Nil
@@ -248,12 +246,12 @@ STATIC FUNCTION Ask()
       IF Empty( HWindow():Getmain():oEdit1:GetText() )
          hwg_msgStop( "Write the question!" )
       ELSE
+         cQue := HWindow():Getmain():oEdit1:GetText()
          StatusChanging( S_ASKING )
-         ecli_RunFunc( hExt, "Ask",{HWindow():Getmain():oEdit1:GetText()}, .T. )
+         ecli_RunFunc( hExt, "Ask",{ cQue }, .T. )
          o := HWindow():Getmain():oEdit2
-         IF o:nTextLen > 1
-            o:InsText( { hb_utf8Len(o:aText[o:nTextLen])+1, o:nTextLen}, Chr(13)+Chr(10) )
-         ENDIF
+         o:InsText( { hb_utf8Len(o:aText[o:nTextLen])+1, o:nTextLen}, ;
+            "> " + cQue + cEndl + Replicate( "-",12 ) + cEndl )
          hwg_SetFocus( o:handle )
       ENDIF
    ENDIF
@@ -269,6 +267,10 @@ STATIC FUNCTION Reset()
    RETURN Nil
 
 STATIC FUNCTION Stop()
+
+   LOCAL o := HWindow():Getmain():oEdit2
+   o:InsText( { hb_utf8Len(o:aText[o:nTextLen])+1, o:nTextLen}, ;
+      cEndl + Replicate( "-",12 ) + cEndl )
 
    StatusChanging( S_CNT_CREATED )
 
@@ -320,7 +322,7 @@ STATIC FUNCTION TimerFunc()
             sAns := _DropQuotes( sAns )
             IF Right( sAns,4 ) == '===='
                StatusChanging( S_CNT_CREATED )
-               sAns := hb_strShrink( sAns, 4 ) + " =="
+               sAns := hb_strShrink( sAns, 4 ) + cEndl + Replicate( "-",12 ) + cEndl
             ELSE
                ecli_RunFunc( hExt, "GetNextToken",{2}, .T. )
             ENDIF
@@ -384,14 +386,6 @@ STATIC FUNCTION StatusChanging( n )
 
 STATIC FUNCTION _DropQuotes( s )
 
-   //LOCAL nPos
-
-   //IF Left( s,1 ) == '"'
-   //   s := Substr( s, 2, Len( s ) - 2 )
-   //ENDIF
-   //IF ( nPos := At( '\n', s ) ) > 0
-   //   s := Iif( nPos==1, "", Left( s,nPos-1 ) ) + Chr(13) + Chr(10) + Substr( s,nPos+2 )
-   //ENDIF
    IF Chr(10)+Chr(10) $ s
       s := StrTran( s, Chr(10)+Chr(10), Chr(10) )
    ENDIF
