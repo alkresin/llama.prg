@@ -54,6 +54,9 @@ repack.cpp $CPP_FL2
 srcpath=llama.cpp\ggml-cpu\llamafile
 sgemm.cpp $CPP_FL2
 
+srcpath=source
+hcommon.c $C_FL2
+
 # llama.lib
 :project llama
 
@@ -63,8 +66,7 @@ guilib=
 
 srcpath=source
 cllama.cpp $CPP_FL
-hllama.c $C_FL
-hcommon.c $C_FL2
+hllama.c
 
 srcpath=llama.cpp
 llama.cpp $CPP_FL

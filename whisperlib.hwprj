@@ -1,0 +1,27 @@
+# Whisper library build script
+
+{win}c_compiler=msvc64
+makemode=on
+outpath=lib
+
+{win}$FLAG=/D WHISPER_VERSION=\"1.7.6\"
+{unix}$FLAG=-xc++ -DWHISPER_VERSION=\"1.7.6\"
+
+target=lib
+objpath=obj/whisper
+outname=whisper
+guilib=
+
+{win}cflags=/TP /W3 /nologo /EHsc /c -Iwhisper -Illama.cpp\include -DLOG_DISABLE_LOGS=1
+{unix}cflags=-std=c++11 -fPIC -O3 -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wmissing-noreturn -pthread  -march=native -mtune=native -Wno-array-bounds -Wno-format-truncation -Wextra-semi -Iwhisper -Illama.cpp/include -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -DNDEBUG -DLOG_DISABLE_LOGS=1 -c
+{unix}def_cflags=-c -Wall
+
+srcpath=whisper
+whisper.cpp $FLAG
+common.cpp $FLAG
+grammar-parser.cpp $FLAG
+common-ggml.cpp $FLAG
+common-whisper.cpp $FLAG
+
+srcpath=source
+hwhisper.cpp $FLAG

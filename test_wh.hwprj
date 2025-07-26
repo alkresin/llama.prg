@@ -1,0 +1,15 @@
+
+{win}c_compiler=msvc64
+{win}gtlib=gtwvt
+{unix}gtlib=gttrm
+
+libspath=lib
+{win}libs=whisper ggml ucrt
+{unix}libs=whisper ggml pthread
+
+{win}def_lflags=/NODEFAULTLIB:libucrt.lib /NODEFAULTLIB:msvcrt.lib /INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /TLBID:1 /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DYNAMICBASE /NXCOMPAT /MACHINE:X64  /machine:x64
+
+{unix}def_cflags=-c -Wall
+{unix}def_lflags=-fPIC -O3 -s -Wall -lstdc++ -shared-libgcc
+
+test_wh.prg
