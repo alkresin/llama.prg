@@ -183,7 +183,8 @@ bool whisper_params_parse( char * szParams ) {
 
       std::string arg = szArg1;
 
-      if( arg == "t" )     { params.n_threads       = std::stoi( szArg2 ); }
+      //wh_writelog( NULL, "arg: %s\n", szArg1 );
+      if( arg == "t" )         { params.n_threads       = std::stoi( szArg2 ); }
       else if( arg == "p" )    { params.n_processors    = std::stoi( szArg2 ); }
       else if( arg == "ot" )   { params.offset_t_ms     = std::stoi( szArg2 ); }
       else if( arg == "on" )   { params.offset_n        = std::stoi( szArg2 ); }
@@ -196,6 +197,9 @@ bool whisper_params_parse( char * szParams ) {
       else if( arg == "wt" )   { params.word_thold      = std::stof( szArg2 ); }
       else if( arg == "et" )   { params.entropy_thold   = std::stof( szArg2 ); }
       else if( arg == "lpt" )  { params.logprob_thold   = std::stof( szArg2 ); }
+      else if (arg == "nth")  { params.no_speech_thold = std::stof( szArg2 ); }
+      else if (arg == "tp")   { params.temperature     = std::stof( szArg2 ); }
+      else if (arg == "tpi")  { params.temperature_inc = std::stof( szArg2 ); }
       else if( arg == "debug" ){ params.debug_mode      = true; }
       else if( arg == "tr" )   { params.translate       = true; }
       else if( arg == "di" )   { params.diarize         = true; }
@@ -203,9 +207,10 @@ bool whisper_params_parse( char * szParams ) {
       else if( arg == "sow" )  { params.split_on_word   = true; }
       else if( arg == "nf" )   { params.no_fallback     = true; }
       else if( arg == "otxt" ) { params.output_txt      = true; }
-      else if (arg == "osrt" ) { params.output_srt      = true; }
-      else if (arg == "olrc" ) { params.output_lrc      = true; }
-      else if (arg == "oj" )   { params.output_jsn      = true; }
+      else if( arg == "osrt" ) { params.output_srt      = true; }
+      else if( arg == "olrc" ) { params.output_lrc      = true; }
+      else if( arg == "oj" )   { params.output_jsn      = true; }
+      else if (arg == "ojf" )  { params.output_jsn_full = params.output_jsn = true; }
       else if( arg == "of" )   { params.fname_out.emplace_back( szArg2 ); }
       else if( arg == "np" )   { params.no_prints       = true; }
       else if( arg == "ps" )   { params.print_special   = true; }
@@ -213,16 +218,28 @@ bool whisper_params_parse( char * szParams ) {
       else if( arg == "nt" )   { params.no_timestamps   = true; }
       else if( arg == "l"  )   { params.language        = whisper_param_turn_lowercase( szArg2 ); }
       else if( arg == "dl" )   { params.detect_language = true; }
-      else if( arg == "prompt" ) { params.prompt       =  szArg2 ; }
+      else if( arg == "prompt" ) { params.prompt        =  szArg2 ; }
       else if( arg == "oved" ) { params.openvino_encode_device = szArg2 ; }
+      else if( arg == "dtw" ) { params.dtw             = szArg2; }
       else if( arg == "ls" )   { params.log_score       = true; }
       else if( arg == "ng" )   { params.use_gpu         = false; }
-      else if( arg == "suppress-regex" )  { params.suppress_regex  = szArg2 ; }
+      else if( arg == "fa" )  { params.flash_attn      = true; }
+      else if( arg == "sns" ) { params.suppress_nst    = true; }
+      else if( arg == "suppress-regex" ) { params.suppress_regex  = szArg2 ; }
       else if( arg == "grammar")         { params.grammar         = szArg2 ; }
       else if( arg == "grammar-rule")    { params.grammar_rule    = szArg2 ; }
       else if( arg == "grammar-penalty") { params.grammar_penalty = std::stof( szArg2 ); }
+      // Voice Activity Detection (VAD)
+      else if( arg == "-vad") { params.vad = true; }
+      else if( arg == "vm" )  { params.vad_model                   = szArg2; }
+      else if( arg == "vt" )  { params.vad_threshold               = std::stof(szArg2); }
+      else if( arg == "vspd") { params.vad_min_speech_duration_ms  = std::stoi(szArg2); }
+      else if( arg == "vsd" ) { params.vad_min_speech_duration_ms  = std::stoi(szArg2); }
+      else if( arg == "vmsd") { params.vad_max_speech_duration_s   = std::stof(szArg2); }
+      else if( arg == "vp" )  { params.vad_speech_pad_ms           = std::stoi(szArg2); }
+      else if( arg == "vo" )  { params.vad_samples_overlap         = std::stof(szArg2); }
       else {
-         return 0;
+         return false;
       }
    }
 
@@ -287,6 +304,7 @@ void whisper_print_progress_callback( struct whisper_context *, struct whisper_s
 void whisper_print_segment_callback( struct whisper_context * ctx, struct whisper_state *,
    int n_new, void * user_data ) {
 
+   //wh_writelog( NULL, "callback-1\n" );
    char buff[SEGMENT_BUF_LEN], *ptr;
    const auto & params  = *((whisper_print_user_data *) user_data)->params;
    const auto & pcmf32s = *((whisper_print_user_data *) user_data)->pcmf32s;
@@ -337,6 +355,7 @@ void whisper_print_segment_callback( struct whisper_context * ctx, struct whispe
          ptr += snprintf( ptr, SEGMENT_BUF_LEN-(ptr-buff), "\n" );
       }
 
+      //wh_writelog( NULL, "  callback-2\n" );
       if( s_pSymTest && hb_dynsymIsFunction( s_pSymTest ) ) {
 
          hb_vmPushDynSym( s_pSymTest );
@@ -672,6 +691,9 @@ HB_FUNC( LLM_WHISPER_PRINT_USAGE )
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  wt N                 [%-7.2f] word timestamp probability threshold\n",params.word_thold);
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  et N                 [%-7.2f] entropy threshold for decoder fail\n", params.entropy_thold);
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  lpt N                [%-7.2f] log probability threshold for decoder fail\n", params.logprob_thold);
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  nth N                [%-7.2f] no speech threshold\n", params.no_speech_thold);
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  tp                   [%-7.2f] The sampling temperature, between 0 and 1\n", params.temperature);
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  tpi                  [%-7.2f] The increment of temperature, between 0 and 1\n",params.temperature_inc);
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  debug                [%-7s] enable debug mode (eg. dump log_mel)\n",params.debug_mode ? "true" : "false");
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  tr                   [%-7s] translate from source language to english\n", params.translate ? "true" : "false");
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  di                   [%-7s] stereo audio diarization\n", params.diarize ? "true" : "false");
@@ -681,6 +703,7 @@ HB_FUNC( LLM_WHISPER_PRINT_USAGE )
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  osrt,                [%-7s] output result in a srt file\n", params.output_srt ? "true" : "false");
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  olrc,                [%-7s] output result in a lrc file\n", params.output_lrc ? "true" : "false");
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  oj,                  [%-7s] output result in a JSON file\n", params.output_jsn ? "true" : "false");
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  ojf                  [%-7s] include more information in the JSON file\n", params.output_jsn_full ? "true" : "false");
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  of FNAME             [%-7s] output file path (without file extension)\n",      "");
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  np                   [%-7s] do not print anything other than the results\n", params.no_prints ? "true" : "false");
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  ps                   [%-7s] print special tokens\n", params.print_special ? "true" : "false");
@@ -690,12 +713,28 @@ HB_FUNC( LLM_WHISPER_PRINT_USAGE )
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  dl                   [%-7s] exit after automatically detecting language\n",params.detect_language ? "true" : "false");
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  prompt PROMPT        [%-7s] initial prompt (max n_text_ctx/2 tokens)\n", params.prompt.c_str());
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  oved D               [%-7s] the OpenVINO device used for encode inference\n", params.openvino_encode_device.c_str());
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  dtw MODEL            [%-7s] compute token-level timestamps\n", params.dtw.c_str());
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  ls,                  [%-7s] log best decoder scores of tokens\n", params.log_score?"true":"false");
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  ng,                  [%-7s] disable GPU\n", params.use_gpu ? "false" : "true");
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  fa                   [%-7s] flash attention\n", params.flash_attn ? "true" : "false");
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  sns                  [%-7s] suppress non-speech tokens\n", params.suppress_nst ? "true" : "false");
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  suppress-regex REGEX [%-7s] regular expression matching tokens to suppress\n", params.suppress_regex.c_str());
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  grammar GRAMMAR      [%-7s] GBNF grammar to guide decoding\n", params.grammar.c_str());
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  grammar-rule RULE    [%-7s] top-level GBNF grammar rule name\n", params.grammar_rule.c_str());
    ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  grammar-penalty N    [%-7.1f] scales down logits of nongrammar tokens\n", params.grammar_penalty);
+   // Voice Activity Detection (VAD) parameters
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "\nVoice Activity Detection (VAD) options:\n");
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "             --vad                           [%-7s] enable Voice Activity Detection (VAD)\n", params.vad ? "true" : "false");
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  -vm FNAME, --vad-model FNAME               [%-7s] VAD model path\n", params.vad_model.c_str());
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  -vt N,     --vad-threshold N               [%-7.2f] VAD threshold for speech recognition\n", params.vad_threshold);
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  -vspd N,   --vad-min-speech-duration-ms  N [%-7d] VAD min speech duration (0.0-1.0)\n", params.vad_min_speech_duration_ms);
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  -vsd N,    --vad-min-silence-duration-ms N [%-7d] VAD min silence duration (to split segments)\n", params.vad_min_silence_duration_ms);
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  -vmsd N,   --vad-max-speech-duration-s   N [%-7s] VAD max speech duration (auto-split longer)\n",
+      params.vad_max_speech_duration_s == FLT_MAX ? std::string("FLT_MAX").c_str() :
+      std::to_string(params.vad_max_speech_duration_s).c_str());
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  -vp N,     --vad-speech-pad-ms           N [%-7d] VAD speech padding (extend segments)\n",             params.vad_speech_pad_ms);
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "  -vo N,     --vad-samples-overlap         N [%-7.2f] VAD samples overlap (seconds between segments)\n", params.vad_samples_overlap);
+   ptr += snprintf( ptr, PBUF_LEN-(ptr-buff), "\n");
 
    hb_retc( buff );
 }
@@ -1007,7 +1046,7 @@ func(ctx, fout_factory.fout, params, __VA_ARGS__); \
    if( bToString ) {
       std::string s;
       output_string( params, pcmf32s, &s );
-      hb_storclen( s.c_str(), s.size(), 3 );
+      hb_storclen( s.c_str(), s.size(), 2 );
    }
 
    hb_retni( 0 );

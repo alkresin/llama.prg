@@ -9,8 +9,8 @@
  *   test_wh <path_to_model> <path_to_wav> [cParamsString]
  * You can find a whisper model, appropriate for your needs and resources on
  *    https://huggingface.co/ggerganov/whisper.cpp
- * cParamsString must be in quotes, parameters divided with '~':
- * "-otxt~-ml=16"
+ * Parameters must be divided with '~':
+ * "otxt~ml=16"
 */
 
 REQUEST HB_CODEPAGE_RU1251, HB_CODEPAGE_RU866
@@ -40,7 +40,7 @@ Function Main( cModel, cWav, cParams )
    IF !Empty( cParams )
       ? "Model parameters accepted"
       llm_Whisper_Set_Params( cParams )
-      hb_Memowrit( "test4_params.out", llm_whisper_print_usage() )
+      hb_Memowrit( "test_wh_params.out", llm_whisper_print_usage() )
    ENDIF
 
    ? Time() + " Loading..."
@@ -56,7 +56,7 @@ Function Main( cModel, cWav, cParams )
    llm_rediroff( 1, n1 )
 
    ? Time() + " " + cWav + " processing..."
-   //llm_whisper_setcallback( "FCALLBACK" )
+   llm_whisper_setcallback( "FCALLBACK" )
    llm_whisper_recognize( cWav )
 
    llm_whisper_close_model()
@@ -67,9 +67,27 @@ Function Main( cModel, cWav, cParams )
 
 FUNCTION FCallBack( s )
 
+   writelog( s )
+   writelog( "---" )
    ?? s
    IF Inkey() == 27
       llm_whisper_abort()
    ENDIF
 
    RETURN Nil
+
+STATIC FUNCTION WriteLog( cText, fname )
+
+   LOCAL nHand
+
+   fname := IIf( fname == Nil, "a.log", fname )
+   IF ! File( fname )
+      nHand := FCreate( fname )
+   ELSE
+      nHand := FOpen( fname, 1 )
+   ENDIF
+   FSeek( nHand, 0, 2 )
+   FWrite( nHand, cText + Chr( 10 ) )
+   FClose( nHand )
+
+   RETURN nil
