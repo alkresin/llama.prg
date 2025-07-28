@@ -994,11 +994,11 @@ HB_FUNC( LLM_WHISPER_RECOGNIZE )
           wparams.new_segment_callback_user_data = &user_data;
       }
 
-      /*
-      if (wparams.print_progress) {
+      
+      /* if (wparams.print_progress) {
           wparams.progress_callback = whisper_print_progress_callback;
           wparams.progress_callback_user_data = &user_data;
-      }  */
+      } */
 
       // in examples below, we do not abort the processing, but we could if the flag is set to true
       // the callback is called before every encoder run - if it returns false, the processing is aborted

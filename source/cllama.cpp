@@ -48,7 +48,9 @@ int n_ctx = 0;
 int n_len = 256;
 int n_cur;
 
+#if defined(__linux__) || defined(__unix__)
 extern "C" {
+#endif
 
 void llm_writelog( const char * sFile, const char * sTraceMsg, ... );
 int llm_open_model( int argc, char **argv );
@@ -394,4 +396,6 @@ void llm_print_timings( void ) {
       common_perf_print( ctx, smpl );
 }
 
+#if defined(__linux__) || defined(__unix__)
 }
+#endif

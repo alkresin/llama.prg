@@ -44,16 +44,16 @@ Function Main( cModel, cWav, cParams )
    ENDIF
 
    ? Time() + " Loading..."
-   n1 := llm_rediron( 1, "stderr.log" )
-   n2 := llm_rediron( 2, "stderr.log" )
+   //n1 := llm_rediron( 1, "stderr.log" )
+   //n2 := llm_rediron( 2, "stderr.log" )
 
    IF llm_Whisper_Open_Model( cModel ) != 0
       ? " === Can't init whisper ==="
       RETURN Nil
    ENDIF
 
-   llm_rediroff( 2, n2 )
-   llm_rediroff( 1, n1 )
+   //llm_rediroff( 2, n2 )
+   //llm_rediroff( 1, n1 )
 
    ? Time() + " " + cWav + " processing..."
    llm_whisper_setcallback( "FCALLBACK" )
@@ -67,8 +67,8 @@ Function Main( cModel, cWav, cParams )
 
 FUNCTION FCallBack( s )
 
-   writelog( s )
-   writelog( "---" )
+   //writelog( s )
+   //writelog( "---" )
    ?? s
    IF Inkey() == 27
       llm_whisper_abort()

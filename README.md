@@ -10,7 +10,7 @@ Harbour bindings to llama,cpp
 
 The main goal of llama.prg project is to provide possibility to create Harbour applications, which
  can interact with local LLaMA language models.
-The project provides a llama and ggml libraries, which may be linked to your application.
+The project provides a llama, ggml and whisper libraries, which may be linked to your application.
 Under Windows it demands 64-bit MSVC compiler, under Linux/Unix - the standard 64-bit GNU C.
 
 The project was started in 2024 and was presented at [Gitflic](https://gitflic.ru/project/alkresin/llama_prg).
@@ -55,6 +55,38 @@ Redirects output ( **n** = 1 - stdout, **n** = 2 - stderr ) to a file **cFile**,
 
 Cancel output redirection ( **n** = 1 - stdout, **n** = 2 - stderr ), **handle** - a file handle, returned by llm_rediron().
 
+#### llm_whisper_print_usage() --> cList
+
+Returns the list of parameters and it's current values.
+
+#### llm_whisper_set_params( cParams ) --> nSuccess
+The function sets the model parameters. Parameters list **cParams** is a string
+ with name=value pairs, divided by ~ character:
+
+name1=value1~name2=value2~...
+
+Return value **nSuccess** is 0 if the function has completed successfully.
+
+#### llm_whisper_open_model( cModel ) --> nSuccess
+The function opens AI model **cModel**.
+
+Return value **nSuccess** is 0 if the function has completed successfully.
+
+#### llm_whisper_close_model()
+Closes previously opened model.
+
+#### llm_whisper_recognize( cWavFile, [@cStringOut] ) --> nSuccess
+Starts the process of recognizing wav file. **cWavFile** - a file name.
+
+Return value **nSuccess** is 0 if the function has completed successfully.
+
+#### llm_whisper_setcallback( cCallbackName )
+Sets callback function with a name **cCallbackName**, which may output recognizing results
+
+#### llm_whisper_abort()
+Aborts the process of recognizing
+
+#### llm_whisper_print_timings()
 
 ## Model parameters
 
