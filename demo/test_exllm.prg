@@ -310,7 +310,10 @@ STATIC FUNCTION TimerFunc()
             ELSE
                StatusChanging( S_MODULE_STARTED )
             ENDIF
-            HWindow():Getmain():oEdit2:SetText( "" )
+            o := HWindow():Getmain()
+            o:oEdit2:SetText( "" )
+            o:oEdit1:lSetFocus := .T.
+            o:oEdit1:Refresh()
          ENDIF
       ELSEIF nStatus == S_ASKING
          IF !Empty( sAns := ecli_CheckAnswer( hExt ) )
