@@ -134,9 +134,9 @@ int llm_open_model( int argc, char **argv ) {
    if( add_bos ) {
        embd_inp.push_back(llama_vocab_bos(vocab));
    } else {
-       llama_model_free( model );
+       /*  llama_model_free( model );
        model = nullptr;
-       return 4;
+       return 4; */
    }
 
    // number of tokens to keep when resetting context
