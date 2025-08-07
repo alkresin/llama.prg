@@ -20,9 +20,9 @@ extern void llm_writelog( const char * sFile, const char * sTraceMsg, ... );
 extern int llm_open_model( int argc, char **argv );
 extern int llm_create_context( void );
 extern int llm_ask_0( const char * szPrompt );
-extern const char * llm_getnexttoken_0( void );
+extern int llm_getnexttoken_0( char * buff );
 extern int llm_ask( const char * szPrompt );
-extern const char * llm_getnexttoken( void );
+extern int llm_getnexttoken( char * buff );
 extern void llm_close_model( void );
 extern void llm_close_context( void );
 extern void llm_print_timings( void );
@@ -114,9 +114,11 @@ HB_FUNC( LLM_ASK_0 )
 HB_FUNC( LLM_GETNEXTTOKEN_0 )
 {
 
-   const char * szToken = llm_getnexttoken_0();
-   if( szToken )
-      hb_retc( szToken );
+   char buff[256];
+
+   int iRes = llm_getnexttoken_0( buff );
+   if( !iRes )
+      hb_retc( buff );
    else
       hb_ret();
 }
@@ -130,9 +132,11 @@ HB_FUNC( LLM_ASK )
 HB_FUNC( LLM_GETNEXTTOKEN )
 {
 
-   const char * szToken = llm_getnexttoken();
-   if( szToken )
-      hb_retc( szToken );
+   char buff[256];
+
+   int iRes = llm_getnexttoken( buff );
+   if( !iRes )
+      hb_retc( buff );
    else
       hb_ret();
 }

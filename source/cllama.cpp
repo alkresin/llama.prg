@@ -56,9 +56,9 @@ void llm_writelog( const char * sFile, const char * sTraceMsg, ... );
 int llm_open_model( int argc, char **argv );
 int llm_create_context( void );
 int llm_ask_0( const char * szPrompt );
-const char * llm_getnexttoken_0( void );
+int llm_getnexttoken_0( char * buff );
 int llm_ask( const char * szPrompt );
-const char * llm_getnexttoken( void );
+int llm_getnexttoken( char * buff );
 void llm_close_model( void );
 void llm_close_context( void );
 void llm_print_timings( void );
@@ -212,8 +212,8 @@ int llm_ask_0( const char * szPrompt ) {
    return 0;
 }
 
-const char * llm_getnexttoken_0( void ) {
-   char buf[128];
+int llm_getnexttoken_0( char * buff ) {
+
    int n = 0;
 
    if( n_cur < n_len ) {
@@ -221,13 +221,13 @@ const char * llm_getnexttoken_0( void ) {
       llama_token new_token_id = (llama_token) common_sampler_sample(smpl, ctx, -1);
       // is it an end of generation?
       if (llama_vocab_is_eog(vocab, new_token_id)) {
-         return NULL;
+         return 1;
       }
 
-      n = llama_token_to_piece(vocab, new_token_id, buf, sizeof(buf), 0, true);
+      n = llama_token_to_piece(vocab, new_token_id, buff, sizeof(buff), 0, true);
       if (n <= 0) {
           //fprintf(stderr, "%s: error: failed to convert token to piece\n", __func__);
-          return NULL;
+          return 2;
       }
 
       // prepare the next batch with the sampled token
@@ -235,13 +235,13 @@ const char * llm_getnexttoken_0( void ) {
       n_cur += batch.n_tokens;
       if (llama_decode(ctx, batch)) {
           //fprintf(stderr, "%s : failed to eval, return code %d\n", __func__, 1);
-          return NULL;
+          return 3;
       }
    } else
-      return NULL;
+      return 4;
 
-   std::string s( buf, n );
-   return s.c_str();
+   buff[n] = '\0';
+   return 0;;
 
 }
 
@@ -264,7 +264,7 @@ int llm_ask( const char * szPrompt ) {
    return 0;
 }
 
-const char * llm_getnexttoken( void ) {
+int llm_getnexttoken( char * buff ) {
 
    bool bOut = false;
 
@@ -286,12 +286,12 @@ const char * llm_getnexttoken( void ) {
       if (n_past + (int) embd.size() >= n_ctx) {
          if (!params.ctx_shift){
              //LOG_INF("\n\n%s: context full and context shift is disabled => stopping\n", __func__);
-             return NULL;
+             return 1;
          }
 
          if (params.n_predict == -2) {
              //LOG_INF("\n\n%s: context full and n_predict == -%d => stopping\n", __func__, params.n_predict);
-             return NULL;
+             return 2;
          }
 
          const int n_left    = n_past - params.n_keep;
@@ -310,7 +310,7 @@ const char * llm_getnexttoken( void ) {
          }
 
          if (llama_decode(ctx, llama_batch_get_one(&embd[i], n_eval))) {
-             return NULL;
+             return 3;
          }
 
          n_past += n_eval;
@@ -338,7 +338,7 @@ const char * llm_getnexttoken( void ) {
 
          ++n_consumed;
          if ((int) embd.size() >= params.n_batch) {
-            return NULL;
+            return 4;
          }
       }
    }
@@ -355,7 +355,7 @@ const char * llm_getnexttoken( void ) {
    if ((int) embd_inp.size() <= n_consumed) {
       // deal with end of generation tokens in interactive mode
       if( llama_vocab_is_eog(vocab, common_sampler_last(smpl)) ) {
-         return NULL;
+         return 5;
       }
    }
 
@@ -363,10 +363,15 @@ const char * llm_getnexttoken( void ) {
    // We skip this logic when n_predict == -1 (infinite) or -2 (stop at context size).
    if( n_remain <= 0 && params.n_predict >= 0 ) {
       n_remain = params.n_predict;
-      return NULL;
+      return 6;
    }
 
-   return sRes.c_str();
+   const char * ptr = sRes.c_str();
+   int iResLen = strlen( ptr );
+   memcpy( buff, ptr, iResLen );
+   buff[iResLen] = '\0';
+
+   return 0;
 }
 
 void llm_close_context( void ) {
