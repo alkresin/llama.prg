@@ -137,6 +137,17 @@ gcc -c -Wall -Wunused  $CPP_FL -I. -oobj/gcc/json-partial.o llama.cpp/common/jso
 gcc -c -Wall -Wunused  $CPP_FL -I. -oobj/gcc/regex-partial.o llama.cpp/common/regex-partial.cpp
 
 ar rc  lib/libllama.a  obj/gcc/cllama.o obj/gcc/hllama.o obj/gcc/llama.o obj/gcc/llama-adapter.o obj/gcc/llama-arch.o obj/gcc/llama-batch.o obj/gcc/llama-chat.o obj/gcc/llama-context.o obj/gcc/llama-grammar.o obj/gcc/llama-graph.o obj/gcc/llama-hparams.o obj/gcc/llama-impl.o obj/gcc/llama-io.o obj/gcc/llama-kv-cache-unified.o obj/gcc/llama-kv-cache-unified-iswa.o obj/gcc/llama-memory.o obj/gcc/llama-mmap.o obj/gcc/llama-model.o obj/gcc/llama-model-loader.o obj/gcc/llama-quant.o obj/gcc/llama-sampling.o obj/gcc/llama-vocab.o obj/gcc/unicode.o obj/gcc/unicode-data.o obj/gcc/llama-model-saver.o obj/gcc/llama-memory-recurrent.o obj/gcc/llama-memory-hybrid.o obj/gcc/build-info.o obj/gcc/arg.o obj/gcc/chat.o obj/gcc/common.o obj/gcc/console.o obj/gcc/json-schema-to-grammar.o obj/gcc/llguidance.o obj/gcc/log.o obj/gcc/ngram-cache.o obj/gcc/sampling.o obj/gcc/speculative.o obj/gcc/chat-parser.o obj/gcc/json-partial.o obj/gcc/regex-partial.o
+
+export FLAG="-xc++ -DWHISPER_VERSION=\"1.7.6\" -c -Wall -std=c++11 -fPIC -O3 -pthread  -march=native -mtune=native -Wno-array-bounds -Wno-format-truncation -Wextra-semi -Iwhisper -Illama.cpp/include -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -DNDEBUG -DLOG_DISABLE_LOGS=1 -c -I$HRB_DIR/include -I."
+
+gcc $FLAG -oobj/whisper/gcc/whisper.o whisper/whisper.cpp
+gcc $FLAG -oobj/whisper/gcc/common.o whisper/common.cpp
+gcc $FLAG -oobj/whisper/gcc/grammar-parser.o whisper/grammar-parser.cpp
+gcc $FLAG -oobj/whisper/gcc/common-ggml.o whisper/common-ggml.cpp
+gcc $FLAG -oobj/whisper/gcc/common-whisper.o whisper/common-whisper.cpp
+gcc $FLAG -oobj/whisper/gcc/hwhisper.o source/hwhisper.cpp
+
+ar rc  lib/libwhisper.a  obj/whisper/gcc/whisper.o obj/whisper/gcc/common.o obj/whisper/gcc/grammar-parser.o obj/whisper/gcc/common-ggml.o obj/whisper/gcc/common-whisper.o obj/whisper/gcc/hwhisper.o
 ```
 
 ## Functions list
