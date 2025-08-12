@@ -2,7 +2,7 @@
  * Llama.prg - Harbour wrappers for llama.cpp
  * Test of recognizing audio (wav) files
  *
- * Copyright 2024 Alexander S.Kresin <alex@kresin.ru>
+ * Copyright 2024-2025 Alexander S.Kresin <alex@kresin.ru>
  * www - http://www.kresin.ru
  *
  * Usage:
