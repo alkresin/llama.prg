@@ -3,9 +3,10 @@ Harbour bindings to llama.cpp and whisper.cpp
 
 1. [Quick review](#quick-review)
 2. [Compiling library](#compiling-library)
-3. [Functions list](#functions-list)
-4. [Model parameters](#model-parameters)
-5. [Links](#links)
+3. [Compiling samples](#compiling-samples)
+4. [Functions list](#functions-list)
+5. [Model parameters](#model-parameters)
+6. [Links](#links)
 
 ## Quick review
 
@@ -252,6 +253,40 @@ gcc $FLAG -oobj/whisper/gcc/common-whisper.o whisper/common-whisper.cpp
 gcc $FLAG -oobj/whisper/gcc/hwhisper.o source/hwhisper.cpp
 
 ar rc  lib/libwhisper.a  obj/whisper/gcc/whisper.o obj/whisper/gcc/common.o obj/whisper/gcc/grammar-parser.o obj/whisper/gcc/common-ggml.o obj/whisper/gcc/common-whisper.o obj/whisper/gcc/hwhisper.o
+```
+
+## Compiling samples
+
+It is better to use HwBuilder to build a sample application - test.hwprj is provided, but you may use the following bat file:
+
+#### Windows
+
+```powershell
+@echo off
+rem Set your Harbour path here
+set HB_PATH=c:\harbour
+
+set HB_LIBS=gtwvt.lib hbvm.lib hbrtl.lib gtgui.lib gtwin.lib hbcpage.lib hblang.lib hbrdd.lib hbmacro.lib hbpp.lib rddntx.lib rddcdx.lib rddfpt.lib hbsix.lib hbcommon.lib hbct.lib hbcplr.lib hbpcre.lib hbzlib.lib
+set LLAMA_LIBS=llama.lib ggml.lib
+set VC_LIBS=ucrt.lib user32.lib gdi32.lib comdlg32.lib shell32.lib comctl32.lib winspool.lib advapi32.lib winmm.lib ws2_32.lib iphlpapi.lib OleAut32.Lib Ole32.Lib
+
+call "c:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" amd64
+
+%HB_PATH%\bin\harbour -n -q -w -i%HB_PATH%\include test.prg
+
+cl.exe /TP /W3 /nologo /c /I%HB_PATH%\include /I. /Fotest.obj test.c
+link /NODEFAULTLIB:libucrt.lib /NODEFAULTLIB:msvcrt.lib /INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /TLBID:1 /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DYNAMICBASE /NXCOMPAT /MACHINE:X64  /machine:x64 /LIBPATH:%HB_PATH%\lib\win\msvc64 /LIBPATH:. /LIBPATH:lib  test.obj %HB_LIBS% %LLAMA_LIBS% %VC_LIBS%
+```
+
+#### Linux
+```bash
+#!/bin/bash
+# Set your Harbour path here
+export HRB_DIR=/home/guest/apps/harbour
+
+$HRB_DIR/bin/linux/gcc/harbour -n -q -i$HRB_DIR/include test.prg
+gcc -c -Wall -I$HRB_DIR/include -otest.o test1.c
+gcc  test.o -otest -L$HRB_DIR/lib/linux/gcc -Llib -Wl,--start-group -lgttrm -lhbvm -lhbrtl -lgtcgi -lgttrm -lhbcpage -lhblang -lhbrdd -lhbmacro -lhbpp -lrddntx -lrddcdx -lrddfpt -lhbsix -lhbcommon -lhbct -lhbcplr -lllama -lggml -lpthread -lm -lz -lpcre -ldl -Wl,--end-group -fPIC -O3 -Wall -lstdc++ -shared-libgcc
 ```
 
 ## Functions list
