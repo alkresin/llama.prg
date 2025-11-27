@@ -1,7 +1,6 @@
 #pragma once
 
-//#include <nlohmann/json_fwd.hpp>
-#include <json_fwd.hpp>
+#include <nlohmann/json_fwd.hpp>
 
 #include <functional>
 #include <string>
@@ -18,5 +17,7 @@ struct common_grammar_builder {
 struct common_grammar_options {
     bool dotall = false;
 };
+
+std::string gbnf_format_literal(const std::string & literal);
 
 std::string build_grammar(const std::function<void(const common_grammar_builder &)> & cb, const common_grammar_options & options = {});

@@ -31,6 +31,7 @@
 common_params params;
 llama_model * model = nullptr;
 llama_context * ctx = nullptr;
+llama_memory_t mem;
 const llama_vocab * vocab;
 //llama_sampler * smpl = nullptr;
 common_sampler * smpl = nullptr;
@@ -158,6 +159,7 @@ int llm_create_context( void ) {
        return 1;
    }
 
+   mem = llama_get_memory( ctx );
    // initialize the sampler
 
    auto & sparams = params.sampling;
@@ -297,8 +299,10 @@ int llm_getnexttoken( char * buff ) {
          const int n_left    = n_past - params.n_keep;
          const int n_discard = n_left/2;
 
-         llama_kv_self_seq_rm (ctx, 0, params.n_keep, params.n_keep + n_discard);
-         llama_kv_self_seq_add(ctx, 0, params.n_keep + n_discard, n_past, -n_discard);
+         //llama_kv_self_seq_rm (ctx, 0, params.n_keep, params.n_keep + n_discard);
+         //llama_kv_self_seq_add(ctx, 0, params.n_keep + n_discard, n_past, -n_discard);
+         llama_memory_seq_rm (mem, 0, params.n_keep, params.n_keep + n_discard);
+         llama_memory_seq_add(mem, 0, params.n_keep + n_discard, n_past, -n_discard);
 
          n_past -= n_discard;
       }
