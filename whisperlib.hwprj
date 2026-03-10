@@ -25,3 +25,4 @@ common-whisper.cpp $FLAG
 
 srcpath=source
 hwhisper.cpp $FLAG
+audiorecord.c  -I../whisper
