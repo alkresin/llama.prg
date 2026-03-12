@@ -33,10 +33,8 @@ llama_model * model = nullptr;
 llama_context * ctx = nullptr;
 llama_memory_t mem;
 const llama_vocab * vocab;
-//llama_sampler * smpl = nullptr;
 common_sampler * smpl = nullptr;
-//llama_model_params model_params;
-common_init_result llama_init;
+//common_init_result llama_init;
 
 std::vector<llama_token> embd_inp;
 std::vector<llama_token> embd;
@@ -104,7 +102,7 @@ int llm_open_model( int argc, char **argv ) {
       llm_writelog( NULL, "%s\n", argv[i] );
    llm_writelog( NULL, "====\n" );
 */
-   if( !common_params_parse( argc, argv, params, LLAMA_EXAMPLE_MAIN, NULL ) )
+   if( !common_params_parse( argc, argv, params, LLAMA_EXAMPLE_CLI, NULL ) )
       return 2;
 
    common_init();
@@ -115,11 +113,6 @@ int llm_open_model( int argc, char **argv ) {
    model = nullptr;
    ctx = nullptr;
    smpl = nullptr;
-
-/*
-   llama_init = common_init_from_params( params );
-   model = llama_init.model.get();
-*/
 
    auto mparams = common_model_params_to_llama(params);
    model = llama_model_load_from_file( params.model.path.c_str(), mparams );

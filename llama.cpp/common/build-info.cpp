@@ -1,4 +1,4 @@
-int LLAMA_BUILD_NUMBER = 4887;
-char const *LLAMA_COMMIT = "8fcb5636";
-char const *LLAMA_COMPILER = "cc (Debian 12.2.0-14) 12.2.0";
-char const *LLAMA_BUILD_TARGET = "x86_64-linux-gnu";
+int LLAMA_BUILD_NUMBER = 8276;
+char const *LLAMA_COMMIT = "aa2d278a1";
+char const *LLAMA_COMPILER = "GNU 12.2.0";
+char const *LLAMA_BUILD_TARGET = "Linux x86_64";
