@@ -13,6 +13,7 @@
  * www - http://www.kresin.ru
 */
 
+//#define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
 #include "hbapi.h"
 #include "hbvm.h"
@@ -127,7 +128,8 @@ HB_FUNC( MA_DEVICE_STOP ) {
 
 /* ma_sleep( nMilliseconds ) -> Nil
  */
+/*
 HB_FUNC( MA_SLEEP ) {
 
    ma_sleep( hb_parni(1) );
-}
+} */
