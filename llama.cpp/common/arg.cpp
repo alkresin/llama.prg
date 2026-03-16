@@ -2,7 +2,7 @@
 
 #include "chat.h"
 #include "common.h"
-#include "download.h"
+/* nohttp #include "download.h" */
 #include "json-schema-to-grammar.h"
 #include "log.h"
 #include "sampling.h"
@@ -279,6 +279,7 @@ static std::string clean_file_name(const std::string & fname) {
     return clean_fname;
 }
 
+/* nohttp
 static bool common_params_handle_remote_preset(common_params & params, llama_example ex) {
     GGML_ASSERT(!params.model.hf_repo.empty());
 
@@ -303,7 +304,7 @@ static bool common_params_handle_remote_preset(common_params & params, llama_exa
     // remote preset is optional, so we don't error out if not found
     if (has_preset) {
         LOG_INF("applying remote preset from %s\n", preset_url.c_str());
-        common_preset_context ctx(ex, /* only_remote_allowed */ true);
+        common_preset_context ctx(ex,  true);
         common_preset global;
         auto remote_presets = ctx.load_from_ini(preset_path, global);
         remote_presets = ctx.cascade(global, remote_presets);
@@ -387,6 +388,7 @@ static handle_model_result common_params_handle_model(
 
     return result;
 }
+*/
 
 const std::vector<ggml_type> kv_cache_types = {
     GGML_TYPE_F32,
@@ -540,6 +542,7 @@ static bool common_params_parse_ex(int argc, char ** argv, common_params_context
     parse_cli_args();
 
     // maybe handle remote preset
+    /* nohttp
     if (!params.model.hf_repo.empty()) {
         std::string cli_hf_repo = params.model.hf_repo;
         bool has_preset = common_params_handle_remote_preset(params, ctx_arg.ex);
@@ -559,7 +562,7 @@ static bool common_params_parse_ex(int argc, char ** argv, common_params_context
             params.model.hf_repo = preset_hf_repo;
         }
     }
-
+    */
     postprocess_cpu_params(params.cpuparams,       nullptr);
     postprocess_cpu_params(params.cpuparams_batch, &params.cpuparams);
 
@@ -571,7 +574,7 @@ static bool common_params_parse_ex(int argc, char ** argv, common_params_context
     }
 
     // handle model and download
-    {
+    /* nohttp {
         auto res = common_params_handle_model(params.model, params.hf_token, params.offline);
         if (params.no_mmproj) {
             params.mmproj = {};
@@ -588,7 +591,7 @@ static bool common_params_parse_ex(int argc, char ** argv, common_params_context
         }
         common_params_handle_model(params.speculative.mparams_dft, params.hf_token, params.offline);
         common_params_handle_model(params.vocoder.model,           params.hf_token, params.offline);
-    }
+    } */
 
     // model is required (except for server)
     // TODO @ngxson : maybe show a list of available models in CLI in this case
@@ -1052,6 +1055,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
             exit(0);
         }
     ));
+    /* nohttp
     add_opt(common_arg(
         {"-cl", "--cache-list"},
         "show list of models in cache",
@@ -1066,6 +1070,7 @@ common_params_context common_params_parser_init(common_params & params, llama_ex
             exit(0);
         }
     ));
+    */
     add_opt(common_arg(
         {"--completion-bash"},
         "print source-able bash completion script for llama.cpp",

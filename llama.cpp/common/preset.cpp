@@ -2,7 +2,7 @@
 #include "preset.h"
 #include "peg-parser.h"
 #include "log.h"
-#include "download.h"
+/* nohttp #include "download.h" */
 
 #include <fstream>
 #include <sstream>
@@ -361,7 +361,7 @@ common_presets common_preset_context::load_from_ini(const std::string & path, co
 
 common_presets common_preset_context::load_from_cache() const {
     common_presets out;
-
+/* nohttp
     auto cached_models = common_list_cached_models();
     for (const auto & model : cached_models) {
         common_preset preset;
@@ -369,7 +369,7 @@ common_presets common_preset_context::load_from_cache() const {
         preset.set_option(*this, "LLAMA_ARG_HF_REPO", model.to_string());
         out[preset.name] = preset;
     }
-
+*/
     return out;
 }
 

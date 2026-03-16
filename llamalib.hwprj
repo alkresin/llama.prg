@@ -112,7 +112,7 @@ chat-diff-analyzer.cpp $CPP_FL -Ivendor
 chat-peg-parser.cpp $CPP_FL -Ivendor
 common.cpp $CPP_FL
 console.cpp $CPP_FL
-download.cpp $CPP_FL -Illama.cpp/include/nlohmann
+#download.cpp $CPP_FL -Illama.cpp/include/nlohmann
 json-schema-to-grammar.cpp $CPP_FL -Illama.cpp/include/nlohmann
 llguidance.cpp $CPP_FL
 log.cpp $CPP_FL
@@ -128,8 +128,8 @@ json-partial.cpp $CPP_FL
 regex-partial.cpp $CPP_FL
 unicode2.cpp $CPP_FL
 
-srcpath=llama.cpp/common/cpp-httplib
-httplib.cpp -O3
+#srcpath=llama.cpp/common/cpp-httplib
+#httplib.cpp $CPP_FL
 
 srcpath=llama.cpp/common/jinja
 caps.cpp $CPP_FL -Ivendor
