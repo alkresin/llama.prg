@@ -45,96 +45,225 @@ if not exist obj\whisper\msvc64 md obj\whisper\msvc64
 
 call "c:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" amd64
 
-set C_FL=/W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D GGML_SCHED_MAX_COPIES=4 /D _XOPEN_SOURCE=600 /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c11 /external:W3 /Gd /TC  /utf-8 /bigobj -Illama.cpp\include /D GGML_VERSION=\"0.0.5939\" /D GGML_COMMIT=\"f0d4d176\"
-set C_FL2=/W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D GGML_SCHED_MAX_COPIES=4 /D _XOPEN_SOURCE=600 /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c11 /external:W3 /Gd /TC /utf-8 /bigobj /arch:AVX2 /openmp /D GGML_USE_OPENMP /D GGML_USE_LLAMAFILE /D GGML_USE_CPU_AARCH64 /D GGML_AVX2 /D GGML_FMA /D GGML_F16C -Illama.cpp\include -Illama.cpp\ggml-cpu
-set CPP_FL=/W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D GGML_USE_CPU /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /external:W3 /Gd /TP  /utf-8 /bigobj -Illama.cpp\include -Illama.cpp\common
-set CPP_FL2=/W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /external:W3 /Gd /TP /utf-8 /bigobj /openmp /arch:AVX2 /D GGML_SCHED_MAX_COPIES=4 /D _XOPEN_SOURCE=600 /D GGML_USE_OPENMP /D GGML_USE_LLAMAFILE /D GGML_USE_CPU_AARCH64 /D GGML_AVX2 /D GGML_FMA /D GGML_F16C -Illama.cpp\include -Illama.cpp\common -Illama.cpp\ggml-cpu
+set C_FL=/nologo /W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D GGML_SCHED_MAX_COPIES=4 /D _XOPEN_SOURCE=600 /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c11 /external:W3 /Gd /TC  /utf-8 /bigobj -Illama.cpp\include /D GGML_VERSION=\"0.9.7\" /D GGML_COMMIT=\"b6c83aad5\"
+set C_FL2=/nologo /W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D GGML_SCHED_MAX_COPIES=4 /D _XOPEN_SOURCE=600 /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c11 /external:W3 /Gd /TC /utf-8 /bigobj /arch:AVX2 /openmp /D GGML_USE_OPENMP /D GGML_USE_LLAMAFILE /D GGML_USE_CPU_AARCH64 /D GGML_AVX2 /D GGML_FMA /D GGML_F16C -Illama.cpp\include -Illama.cpp\ggml-cpu
+set CPP_FL=/nologo /W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /D GGML_USE_CPU /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /external:W3 /Gd /TP  /utf-8 /bigobj -Illama.cpp\include -Illama.cpp\common
+set CPP_FL2=/nologo /W3 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D _CRT_SECURE_NO_WARNINGS /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /std:c++17 /external:W3 /Gd /TP /utf-8 /bigobj /openmp /arch:AVX2 /D GGML_SCHED_MAX_COPIES=4 /D _XOPEN_SOURCE=600 /D GGML_USE_OPENMP /D GGML_USE_LLAMAFILE /D GGML_USE_CPU_AARCH64 /D GGML_AVX2 /D GGML_FMA /D GGML_F16C -Illama.cpp\include -Illama.cpp\common -Illama.cpp\ggml-cpu
 
+set FLAG=/TP /W3 /nologo /c
 set OBJ=obj\msvc64
 
-cl.exe /TP /W3 /nologo /c %C_FL% /I. /Fo%OBJ%\ggml.obj llama.cpp\ggml.c
-cl.exe /TP /W3 /nologo /c %C_FL% /I. /Fo%OBJ%\ggml-alloc.obj llama.cpp\ggml-alloc.c
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\ggml-backend.obj llama.cpp\ggml-backend.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\ggml-opt.obj llama.cpp\ggml-opt.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\ggml-threading.obj llama.cpp\ggml-threading.cpp
-cl.exe /TP /W3 /nologo /c %C_FL% /I. /Fo%OBJ%\ggml-quants.obj llama.cpp\ggml-quants.c
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\gguf.obj llama.cpp\gguf.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\ggml-backend-reg.obj llama.cpp\ggml-backend-reg.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\ggml-cpu2.obj llama.cpp\ggml-cpu\ggml-cpu2.cpp
-cl.exe /TP /W3 /nologo /c %C_FL2% /I. /Fo%OBJ%\ggml-cpu.obj llama.cpp\ggml-cpu\ggml-cpu.c
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\hbm.obj llama.cpp\ggml-cpu\hbm.cpp
-cl.exe /TP /W3 /nologo /c %C_FL2% /I. /Fo%OBJ%\quants.obj llama.cpp\ggml-cpu\quants.c
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\traits.obj llama.cpp\ggml-cpu\traits.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\ops.obj llama.cpp\ggml-cpu\ops.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\vec.obj llama.cpp\ggml-cpu\vec.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\binary-ops.obj llama.cpp\ggml-cpu\binary-ops.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\unary-ops.obj llama.cpp\ggml-cpu\unary-ops.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\amx.obj llama.cpp\ggml-cpu\amx\amx.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\mmq.obj llama.cpp\ggml-cpu\amx\mmq.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\cpu-feats.obj llama.cpp\ggml-cpu\arch\x86\cpu-feats.cpp
-cl.exe /TP /W3 /nologo /c %C_FL2% /I. /Fo%OBJ%\quants_arch.obj llama.cpp\ggml-cpu\arch\x86\quants_arch.c
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\repack.obj llama.cpp\ggml-cpu\arch\x86\repack.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL2% /I. /Fo%OBJ%\sgemm.obj llama.cpp\ggml-cpu\llamafile\sgemm.cpp
-cl.exe /TP /W3 /nologo /c %C_FL2% /I. /Ic:\harbour\include /Fo%OBJ%\hcommon.obj source\hcommon.c
+cl.exe %FLAG% %C_FL% /I. /Fo%OBJ%\ggml.obj llama.cpp\ggml.c
+cl.exe %FLAG% %C_FL% /I. /Fo%OBJ%\ggml-alloc.obj llama.cpp\ggml-alloc.c
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\ggml-backend.obj llama.cpp\ggml-backend.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\ggml-backend-dl.obj llama.cpp\ggml-backend-dl.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\ggml-backend-reg.obj llama.cpp\ggml-backend-reg.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\ggml-opt.obj llama.cpp\ggml-opt.cpp
+cl.exe %FLAG% %C_FL% /I. /Fo%OBJ%\ggml-quants.obj llama.cpp\ggml-quants.c
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\ggml-threading.obj llama.cpp\ggml-threading.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\gguf.obj llama.cpp\gguf.cpp
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\ggml-cpu2.obj llama.cpp\ggml-cpu\ggml-cpu2.cpp
+cl.exe %FLAG% %C_FL2% /I. /Fo%OBJ%\ggml-cpu.obj llama.cpp\ggml-cpu\ggml-cpu.c
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\hbm.obj llama.cpp\ggml-cpu\hbm.cpp
+cl.exe %FLAG% %C_FL2% /I. /Fo%OBJ%\quants.obj llama.cpp\ggml-cpu\quants.c
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\traits.obj llama.cpp\ggml-cpu\traits.cpp
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\ops.obj llama.cpp\ggml-cpu\ops.cpp
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\vec.obj llama.cpp\ggml-cpu\vec.cpp
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\binary-ops.obj llama.cpp\ggml-cpu\binary-ops.cpp
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\unary-ops.obj llama.cpp\ggml-cpu\unary-ops.cpp
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\repack.obj llama.cpp\ggml-cpu\repack.cpp
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\amx.obj llama.cpp\ggml-cpu\amx\amx.cpp
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\mmq.obj llama.cpp\ggml-cpu\amx\mmq.cpp
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\cpu-feats.obj llama.cpp\ggml-cpu\arch\x86\cpu-feats.cpp
+cl.exe %FLAG% %C_FL2% /I. /Fo%OBJ%\quants_arch.obj llama.cpp\ggml-cpu\arch\x86\quants_arch.c
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\repack_arch.obj llama.cpp\ggml-cpu\arch\x86\repack_arch.cpp
+cl.exe %FLAG% %CPP_FL2% /I. /Fo%OBJ%\sgemm.obj llama.cpp\ggml-cpu\llamafile\sgemm.cpp
+cl.exe %FLAG% %C_FL2% /Ic:\harbour\include /I. /Fo%OBJ%\hcommon.obj source\hcommon.c
 
-lib  /out:lib\ggml.lib  %OBJ%\ggml.obj %OBJ%\ggml-alloc.obj %OBJ%\ggml-backend.obj %OBJ%\ggml-opt.obj %OBJ%\ggml-threading.obj %OBJ%\ggml-quants.obj %OBJ%\gguf.obj %OBJ%\ggml-backend-reg.obj %OBJ%\ggml-cpu2.obj %OBJ%\ggml-cpu.obj %OBJ%\hbm.obj %OBJ%\quants.obj %OBJ%\traits.obj %OBJ%\ops.obj %OBJ%\vec.obj %OBJ%\binary-ops.obj %OBJ%\unary-ops.obj %OBJ%\amx.obj %OBJ%\mmq.obj %OBJ%\cpu-feats.obj %OBJ%\quants_arch.obj %OBJ%\repack.obj %OBJ%\sgemm.obj %OBJ%\hcommon.obj
+lib  /out:lib\ggml.lib  %OBJ%\ggml.obj %OBJ%\ggml-alloc.obj %OBJ%\ggml-backend.obj %OBJ%\ggml-backend-dl.obj %OBJ%\ggml-backend-reg.obj %OBJ%\ggml-opt.obj %OBJ%\ggml-quants.obj %OBJ%\ggml-threading.obj %OBJ%\gguf.obj %OBJ%\ggml-cpu2.obj %OBJ%\ggml-cpu.obj %OBJ%\hbm.obj %OBJ%\quants.obj %OBJ%\traits.obj %OBJ%\ops.obj %OBJ%\vec.obj %OBJ%\binary-ops.obj %OBJ%\unary-ops.obj %OBJ%\repack.obj %OBJ%\amx.obj %OBJ%\mmq.obj %OBJ%\cpu-feats.obj %OBJ%\quants_arch.obj %OBJ%\repack_arch.obj %OBJ%\sgemm.obj %OBJ%\hcommon.obj
 
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\cllama.obj source\cllama.cpp
-cl.exe /TP /W3 /nologo /c /I. /Ic:\harbour\include /Fo%OBJ%\hllama.obj source\hllama.c
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama.obj llama.cpp\llama.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-adapter.obj llama.cpp\llama-adapter.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-arch.obj llama.cpp\llama-arch.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-batch.obj llama.cpp\llama-batch.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-chat.obj llama.cpp\llama-chat.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-context.obj llama.cpp\llama-context.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-grammar.obj llama.cpp\llama-grammar.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-graph.obj llama.cpp\llama-graph.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-hparams.obj llama.cpp\llama-hparams.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-impl.obj llama.cpp\llama-impl.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-io.obj llama.cpp\llama-io.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-kv-cache-iswa.obj llama.cpp\llama-kv-cache-iswa.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-kv-cache.obj llama.cpp\llama-kv-cache.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-memory.obj llama.cpp\llama-memory.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-mmap.obj llama.cpp\llama-mmap.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-model.obj llama.cpp\llama-model.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-model-loader.obj llama.cpp\llama-model-loader.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-quant.obj llama.cpp\llama-quant.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-sampling.obj llama.cpp\llama-sampling.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-vocab.obj llama.cpp\llama-vocab.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\unicode.obj llama.cpp\unicode.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\unicode-data.obj llama.cpp\unicode-data.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-model-saver.obj llama.cpp\llama-model-saver.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-memory-recurrent.obj llama.cpp\llama-memory-recurrent.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llama-memory-hybrid.obj llama.cpp\llama-memory-hybrid.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\build-info.obj llama.cpp\common\build-info.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% -Illama.cpp/include/nlohmann /I. /Fo%OBJ%\arg.obj llama.cpp\common\arg.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% -Illama.cpp/include/nlohmann /I. /Fo%OBJ%\chat.obj llama.cpp\common\chat.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\common.obj llama.cpp\common\common.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\console.obj llama.cpp\common\console.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% -Illama.cpp/include/nlohmann /I. /Fo%OBJ%\chat-parser-xml-toolcall.obj llama.cpp\common\chat-parser-xml-toolcall.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% -Illama.cpp/include/nlohmann /I. /Fo%OBJ%\download.obj llama.cpp\common\download.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% -Illama.cpp/include/nlohmann /I. /Fo%OBJ%\json-schema-to-grammar.obj llama.cpp\common\json-schema-to-grammar.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\llguidance.obj llama.cpp\common\llguidance.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\log.obj llama.cpp\common\log.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\ngram-cache.obj llama.cpp\common\ngram-cache.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\sampling.obj llama.cpp\common\sampling.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\speculative.obj llama.cpp\common\speculative.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\chat-parser.obj llama.cpp\common\chat-parser.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\json-partial.obj llama.cpp\common\json-partial.cpp
-cl.exe /TP /W3 /nologo /c %CPP_FL% /I. /Fo%OBJ%\regex-partial.obj llama.cpp\common\regex-partial.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\cllama.obj source\cllama.cpp
+cl.exe %FLAG% /Ic:\harbour\include /I. /Fo%OBJ%\hllama.obj source\hllama.c
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama.obj llama.cpp\llama.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-adapter.obj llama.cpp\llama-adapter.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-arch.obj llama.cpp\llama-arch.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-batch.obj llama.cpp\llama-batch.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-chat.obj llama.cpp\llama-chat.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-context.obj llama.cpp\llama-context.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-grammar.obj llama.cpp\llama-grammar.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-graph.obj llama.cpp\llama-graph.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-hparams.obj llama.cpp\llama-hparams.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-impl.obj llama.cpp\llama-impl.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-io.obj llama.cpp\llama-io.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-kv-cache.obj llama.cpp\llama-kv-cache.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-kv-cache-iswa.obj llama.cpp\llama-kv-cache-iswa.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-memory.obj llama.cpp\llama-memory.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-memory-hybrid-iswa.obj llama.cpp\llama-memory-hybrid-iswa.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-mmap.obj llama.cpp\llama-mmap.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-model.obj llama.cpp\llama-model.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-model-loader.obj llama.cpp\llama-model-loader.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-quant.obj llama.cpp\llama-quant.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-sampler.obj llama.cpp\llama-sampler.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-vocab.obj llama.cpp\llama-vocab.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\unicode.obj llama.cpp\unicode.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\unicode-data.obj llama.cpp\unicode-data.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-model-saver.obj llama.cpp\llama-model-saver.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-memory-recurrent.obj llama.cpp\llama-memory-recurrent.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llama-memory-hybrid.obj llama.cpp\llama-memory-hybrid.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\afmoe.obj llama.cpp\models\afmoe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\apertus.obj llama.cpp\models\apertus.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\arcee.obj llama.cpp\models\arcee.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\arctic.obj llama.cpp\models\arctic.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\arwkv7.obj llama.cpp\models\arwkv7.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\baichuan.obj llama.cpp\models\baichuan.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\bailingmoe.obj llama.cpp\models\bailingmoe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\bailingmoe2.obj llama.cpp\models\bailingmoe2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\bert.obj llama.cpp\models\bert.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\bitnet.obj llama.cpp\models\bitnet.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\bloom.obj llama.cpp\models\bloom.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\chameleon.obj llama.cpp\models\chameleon.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\chatglm.obj llama.cpp\models\chatglm.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\codeshell.obj llama.cpp\models\codeshell.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\cogvlm.obj llama.cpp\models\cogvlm.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\cohere2-iswa.obj llama.cpp\models\cohere2-iswa.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\command-r.obj llama.cpp\models\command-r.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\dbrx.obj llama.cpp\models\dbrx.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\deci.obj llama.cpp\models\deci.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\deepseek.obj llama.cpp\models\deepseek.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\deepseek2.obj llama.cpp\models\deepseek2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\delta-net-base.obj llama.cpp\models\delta-net-base.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\dots1.obj llama.cpp\models\dots1.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\dream.obj llama.cpp\models\dream.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\ernie4-5-moe.obj llama.cpp\models\ernie4-5-moe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\ernie4-5.obj llama.cpp\models\ernie4-5.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\eurobert.obj llama.cpp\models\eurobert.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\exaone-moe.obj llama.cpp\models\exaone-moe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\exaone.obj llama.cpp\models\exaone.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\exaone4.obj llama.cpp\models\exaone4.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\falcon-h1.obj llama.cpp\models\falcon-h1.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\falcon.obj llama.cpp\models\falcon.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\gemma-embedding.obj llama.cpp\models\gemma-embedding.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\gemma.obj llama.cpp\models\gemma.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\gemma2-iswa.obj llama.cpp\models\gemma2-iswa.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\gemma3.obj llama.cpp\models\gemma3.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\gemma3n-iswa.obj llama.cpp\models\gemma3n-iswa.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\glm4-moe.obj llama.cpp\models\glm4-moe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\glm4.obj llama.cpp\models\glm4.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\gpt2.obj llama.cpp\models\gpt2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\gptneox.obj llama.cpp\models\gptneox.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\granite-hybrid.obj llama.cpp\models\granite-hybrid.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\granite.obj llama.cpp\models\granite.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\grok.obj llama.cpp\models\grok.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\grovemoe.obj llama.cpp\models\grovemoe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\hunyuan-dense.obj llama.cpp\models\hunyuan-dense.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\hunyuan-moe.obj llama.cpp\models\hunyuan-moe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\internlm2.obj llama.cpp\models\internlm2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\jais.obj llama.cpp\models\jais.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\jais2.obj llama.cpp\models\jais2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\jamba.obj llama.cpp\models\jamba.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\kimi-linear.obj llama.cpp\models\kimi-linear.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\lfm2.obj llama.cpp\models\lfm2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\llada-moe.obj llama.cpp\models\llada-moe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\llada.obj llama.cpp\models\llada.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\llama-iswa.obj llama.cpp\models\llama-iswa.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\llama2.obj llama.cpp\models\llama2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\maincoder.obj llama.cpp\models\maincoder.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\mamba-base.obj llama.cpp\models\mamba-base.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\mamba.obj llama.cpp\models\mamba.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\mimo2-iswa.obj llama.cpp\models\mimo2-iswa.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\minicpm3.obj llama.cpp\models\minicpm3.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\minimax-m2.obj llama.cpp\models\minimax-m2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\mistral3.obj llama.cpp\models\mistral3.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\modern-bert.obj llama.cpp\models\modern-bert.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\mpt.obj llama.cpp\models\mpt.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\nemotron-h.obj llama.cpp\models\nemotron-h.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\nemotron.obj llama.cpp\models\nemotron.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\neo-bert.obj llama.cpp\models\neo-bert.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\olmo.obj llama.cpp\models\olmo.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\olmo2.obj llama.cpp\models\olmo2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\olmoe.obj llama.cpp\models\olmoe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\openai-moe-iswa.obj llama.cpp\models\openai-moe-iswa.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\openelm.obj llama.cpp\models\openelm.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\orion.obj llama.cpp\models\orion.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\paddleocr.obj llama.cpp\models\paddleocr.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\pangu-embedded.obj llama.cpp\models\pangu-embedded.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\phi2.obj llama.cpp\models\phi2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\phi3.obj llama.cpp\models\phi3.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\plamo.obj llama.cpp\models\plamo.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\plamo2.obj llama.cpp\models\plamo2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\plamo3.obj llama.cpp\models\plamo3.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\plm.obj llama.cpp\models\plm.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen.obj llama.cpp\models\qwen.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen2.obj llama.cpp\models\qwen2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen2moe.obj llama.cpp\models\qwen2moe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen2vl.obj llama.cpp\models\qwen2vl.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen3.obj llama.cpp\models\qwen3.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen35.obj llama.cpp\models\qwen35.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen35moe.obj llama.cpp\models\qwen35moe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen3moe.obj llama.cpp\models\qwen3moe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen3next.obj llama.cpp\models\qwen3next.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen3vl-moe.obj llama.cpp\models\qwen3vl-moe.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\qwen3vl.obj llama.cpp\models\qwen3vl.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\refact.obj llama.cpp\models\refact.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\rnd1.obj llama.cpp\models\rnd1.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\rwkv6-base.obj llama.cpp\models\rwkv6-base.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\rwkv6.obj llama.cpp\models\rwkv6.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\rwkv6qwen2.obj llama.cpp\models\rwkv6qwen2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\rwkv7-base.obj llama.cpp\models\rwkv7-base.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\rwkv7.obj llama.cpp\models\rwkv7.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\seed-oss.obj llama.cpp\models\seed-oss.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\smallthinker.obj llama.cpp\models\smallthinker.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\smollm3.obj llama.cpp\models\smollm3.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\stablelm.obj llama.cpp\models\stablelm.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\starcoder.obj llama.cpp\models\starcoder.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\starcoder2.obj llama.cpp\models\starcoder2.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\step35-iswa.obj llama.cpp\models\step35-iswa.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\t5-dec.obj llama.cpp\models\t5-dec.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\t5-enc.obj llama.cpp\models\t5-enc.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\wavtokenizer-dec.obj llama.cpp\models\wavtokenizer-dec.cpp
+cl.exe %FLAG% %CPP_FL% -Isrc /I. /Fo%OBJ%\xverse.obj llama.cpp\models\xverse.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\build-info.obj llama.cpp\common\build-info.cpp
+cl.exe %FLAG% %CPP_FL% -Illama.cpp/include/nlohmann /I. /Fo%OBJ%\arg.obj llama.cpp\common\arg.cpp
+cl.exe %FLAG% %CPP_FL% -Illama.cpp/include/nlohmann /I. /Fo%OBJ%\chat.obj llama.cpp\common\chat.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\chat-auto-parser-generator.obj llama.cpp\common\chat-auto-parser-generator.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\chat-auto-parser-helpers.obj llama.cpp\common\chat-auto-parser-helpers.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\chat-diff-analyzer.obj llama.cpp\common\chat-diff-analyzer.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\chat-peg-parser.obj llama.cpp\common\chat-peg-parser.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\common.obj llama.cpp\common\common.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\console.obj llama.cpp\common\console.cpp
+cl.exe %FLAG% %CPP_FL% -Illama.cpp/include/nlohmann /I. /Fo%OBJ%\json-schema-to-grammar.obj llama.cpp\common\json-schema-to-grammar.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\llguidance.obj llama.cpp\common\llguidance.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\log.obj llama.cpp\common\log.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\license.obj llama.cpp\common\license.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\ngram-cache.obj llama.cpp\common\ngram-cache.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\ngram-map.obj llama.cpp\common\ngram-map.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\ngram-mod.obj llama.cpp\common\ngram-mod.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\peg-parser.obj llama.cpp\common\peg-parser.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\preset.obj llama.cpp\common\preset.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\sampling.obj llama.cpp\common\sampling.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\speculative.obj llama.cpp\common\speculative.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\json-partial.obj llama.cpp\common\json-partial.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\reasoning-budget.obj llama.cpp\common\reasoning-budget.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\regex-partial.obj llama.cpp\common\regex-partial.cpp
+cl.exe %FLAG% %CPP_FL% /I. /Fo%OBJ%\unicode2.obj llama.cpp\common\unicode2.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\caps.obj llama.cpp\common\jinja\caps.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\lexer.obj llama.cpp\common\jinja\lexer.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\parser.obj llama.cpp\common\jinja\parser.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\runtime.obj llama.cpp\common\jinja\runtime.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\string.obj llama.cpp\common\jinja\string.cpp
+cl.exe %FLAG% %CPP_FL% -Ivendor /I. /Fo%OBJ%\value.obj llama.cpp\common\jinja\value.cpp
 
-lib  /out:lib\llama.lib  %OBJ%\cllama.obj %OBJ%\hllama.obj %OBJ%\llama.obj %OBJ%\llama-adapter.obj %OBJ%\llama-arch.obj %OBJ%\llama-batch.obj %OBJ%\llama-chat.obj %OBJ%\llama-context.obj %OBJ%\llama-grammar.obj %OBJ%\llama-graph.obj %OBJ%\llama-hparams.obj %OBJ%\llama-impl.obj %OBJ%\llama-io.obj %OBJ%\llama-kv-cache-unified.obj %OBJ%\llama-kv-cache-unified-iswa.obj %OBJ%\llama-memory.obj %OBJ%\llama-mmap.obj %OBJ%\llama-model.obj %OBJ%\llama-model-loader.obj %OBJ%\llama-quant.obj %OBJ%\llama-sampling.obj %OBJ%\llama-vocab.obj %OBJ%\unicode.obj %OBJ%\unicode-data.obj %OBJ%\llama-model-saver.obj %OBJ%\llama-memory-recurrent.obj %OBJ%\llama-memory-hybrid.obj %OBJ%\build-info.obj %OBJ%\arg.obj %OBJ%\chat.obj %OBJ%\common.obj %OBJ%\console.obj %OBJ%\json-schema-to-grammar.obj %OBJ%\llguidance.obj %OBJ%\log.obj %OBJ%\ngram-cache.obj %OBJ%\sampling.obj %OBJ%\speculative.obj %OBJ%\chat-parser.obj %OBJ%\json-partial.obj %OBJ%\regex-partial.obj
+lib  /out:lib\llama.lib  %OBJ%\cllama.obj %OBJ%\hllama.obj %OBJ%\llama.obj %OBJ%\llama-adapter.obj %OBJ%\llama-arch.obj %OBJ%\llama-batch.obj %OBJ%\llama-chat.obj %OBJ%\llama-context.obj %OBJ%\llama-grammar.obj %OBJ%\llama-graph.obj %OBJ%\llama-hparams.obj %OBJ%\llama-impl.obj %OBJ%\llama-io.obj %OBJ%\llama-kv-cache.obj %OBJ%\llama-kv-cache-iswa.obj %OBJ%\llama-memory.obj %OBJ%\llama-memory-hybrid-iswa.obj %OBJ%\llama-mmap.obj %OBJ%\llama-model.obj %OBJ%\llama-model-loader.obj %OBJ%\llama-quant.obj %OBJ%\llama-sampler.obj %OBJ%\llama-vocab.obj %OBJ%\unicode.obj %OBJ%\unicode-data.obj %OBJ%\llama-model-saver.obj %OBJ%\llama-memory-recurrent.obj %OBJ%\llama-memory-hybrid.obj %OBJ%\afmoe.obj %OBJ%\apertus.obj %OBJ%\arcee.obj %OBJ%\arctic.obj %OBJ%\arwkv7.obj %OBJ%\baichuan.obj %OBJ%\bailingmoe.obj %OBJ%\bailingmoe2.obj %OBJ%\bert.obj %OBJ%\bitnet.obj %OBJ%\bloom.obj %OBJ%\chameleon.obj %OBJ%\chatglm.obj %OBJ%\codeshell.obj %OBJ%\cogvlm.obj %OBJ%\cohere2-iswa.obj %OBJ%\command-r.obj %OBJ%\dbrx.obj %OBJ%\deci.obj %OBJ%\deepseek.obj %OBJ%\deepseek2.obj %OBJ%\delta-net-base.obj %OBJ%\dots1.obj %OBJ%\dream.obj %OBJ%\ernie4-5-moe.obj %OBJ%\ernie4-5.obj %OBJ%\eurobert.obj %OBJ%\exaone-moe.obj %OBJ%\exaone.obj %OBJ%\exaone4.obj %OBJ%\falcon-h1.obj %OBJ%\falcon.obj %OBJ%\gemma-embedding.obj %OBJ%\gemma.obj %OBJ%\gemma2-iswa.obj %OBJ%\gemma3.obj %OBJ%\gemma3n-iswa.obj %OBJ%\glm4-moe.obj %OBJ%\glm4.obj %OBJ%\gpt2.obj %OBJ%\gptneox.obj %OBJ%\granite-hybrid.obj %OBJ%\granite.obj %OBJ%\grok.obj %OBJ%\grovemoe.obj %OBJ%\hunyuan-dense.obj %OBJ%\hunyuan-moe.obj %OBJ%\internlm2.obj %OBJ%\jais.obj %OBJ%\jais2.obj %OBJ%\jamba.obj %OBJ%\kimi-linear.obj %OBJ%\lfm2.obj %OBJ%\llada-moe.obj %OBJ%\llada.obj %OBJ%\llama-iswa.obj %OBJ%\llama2.obj %OBJ%\maincoder.obj %OBJ%\mamba-base.obj %OBJ%\mamba.obj %OBJ%\mimo2-iswa.obj %OBJ%\minicpm3.obj %OBJ%\minimax-m2.obj %OBJ%\mistral3.obj %OBJ%\modern-bert.obj %OBJ%\mpt.obj %OBJ%\nemotron-h.obj %OBJ%\nemotron.obj %OBJ%\neo-bert.obj %OBJ%\olmo.obj %OBJ%\olmo2.obj %OBJ%\olmoe.obj %OBJ%\openai-moe-iswa.obj %OBJ%\openelm.obj %OBJ%\orion.obj %OBJ%\paddleocr.obj %OBJ%\pangu-embedded.obj %OBJ%\phi2.obj %OBJ%\phi3.obj %OBJ%\plamo.obj %OBJ%\plamo2.obj %OBJ%\plamo3.obj %OBJ%\plm.obj %OBJ%\qwen.obj %OBJ%\qwen2.obj %OBJ%\qwen2moe.obj %OBJ%\qwen2vl.obj %OBJ%\qwen3.obj %OBJ%\qwen35.obj %OBJ%\qwen35moe.obj %OBJ%\qwen3moe.obj %OBJ%\qwen3next.obj %OBJ%\qwen3vl-moe.obj %OBJ%\qwen3vl.obj %OBJ%\refact.obj %OBJ%\rnd1.obj %OBJ%\rwkv6-base.obj %OBJ%\rwkv6.obj %OBJ%\rwkv6qwen2.obj %OBJ%\rwkv7-base.obj %OBJ%\rwkv7.obj %OBJ%\seed-oss.obj %OBJ%\smallthinker.obj %OBJ%\smollm3.obj %OBJ%\stablelm.obj %OBJ%\starcoder.obj %OBJ%\starcoder2.obj %OBJ%\step35-iswa.obj %OBJ%\t5-dec.obj %OBJ%\t5-enc.obj %OBJ%\wavtokenizer-dec.obj %OBJ%\xverse.obj %OBJ%\build-info.obj %OBJ%\arg.obj %OBJ%\chat.obj %OBJ%\chat-auto-parser-generator.obj %OBJ%\chat-auto-parser-helpers.obj %OBJ%\chat-diff-analyzer.obj %OBJ%\chat-peg-parser.obj %OBJ%\common.obj %OBJ%\console.obj %OBJ%\json-schema-to-grammar.obj %OBJ%\llguidance.obj %OBJ%\log.obj %OBJ%\license.obj %OBJ%\ngram-cache.obj %OBJ%\ngram-map.obj %OBJ%\ngram-mod.obj %OBJ%\peg-parser.obj %OBJ%\preset.obj %OBJ%\sampling.obj %OBJ%\speculative.obj %OBJ%\json-partial.obj %OBJ%\reasoning-budget.obj %OBJ%\regex-partial.obj %OBJ%\unicode2.obj %OBJ%\caps.obj %OBJ%\lexer.obj %OBJ%\parser.obj %OBJ%\runtime.obj %OBJ%\string.obj %OBJ%\value.obj
 
+set FLAG=/TP /W3 /nologo /EHsc /c /MD -Iwhisper -Illama.cpp\include /I. -DLOG_DISABLE_LOGS=1 /D WHISPER_VERSION=\"1.7.6\"
 set OBJ=obj\whisper\msvc64
 
-set FLAG=/D WHISPER_VERSION=\"1.7.6\" /TP /W3 /nologo /EHsc /c /MD -Iwhisper -Illama.cpp\include -DLOG_DISABLE_LOGS=1
-
-cl.exe  %FLAG%  /I. /Fo%OBJ%\whisper.obj whisper\whisper.cpp
-cl.exe  %FLAG%  /I. /Fo%OBJ%\common.obj whisper\common.cpp
-cl.exe  %FLAG%  /I. /Fo%OBJ%\grammar-parser.obj whisper\grammar-parser.cpp
-cl.exe  %FLAG%  /I. /Fo%OBJ%\common-ggml.obj whisper\common-ggml.cpp
-cl.exe  %FLAG%  /I. /Fo%OBJ%\common-whisper.obj whisper\common-whisper.cpp
-cl.exe  %FLAG% /Ic:\harbour\include /I. /Fo%OBJ%\hwhisper.obj source\hwhisper.cpp
+cl.exe  %FLAG% /Fo%OBJ%\whisper.obj whisper\whisper.cpp
+cl.exe %FLAG% /Fo%OBJ%\common.obj whisper\common.cpp
+cl.exe %FLAG% /Fo%OBJ%\grammar-parser.obj whisper\grammar-parser.cpp
+cl.exe %FLAG% /Fo%OBJ%\common-ggml.obj whisper\common-ggml.cpp
+cl.exe %FLAG% /Fo%OBJ%\common-whisper.obj whisper\common-whisper.cpp
+cl.exe %FLAG% /Ic:\harbour\include /Fo%OBJ%\hwhisper.obj source\hwhisper.cpp
 
 lib  /out:lib\whisper.lib  %OBJ%\whisper.obj %OBJ%\common.obj %OBJ%\grammar-parser.obj %OBJ%\common-ggml.obj %OBJ%\common-whisper.obj %OBJ%\hwhisper.obj
 ```
