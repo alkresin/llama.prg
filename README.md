@@ -273,6 +273,7 @@ Of course, you need to use your paths.
 
 ```bash
 #!/bin/bash
+#!/bin/bash
 if ! [ -e lib ]; then
    mkdir lib
    chmod a+w+r+x lib
@@ -308,102 +309,120 @@ if ! [ -e obj/whisper/gcc ]; then
 fi
 
 # Set your Harbour path here
-export HRB_DIR=/home/guest/apps/harbour
+export HRB_DIR=/home/alkresin/apps/harbour
 export OBJ=obj/ggml/gcc
 
-export C_FL="-DGGML_USE_CPU -DGGML_SCHED_MAX_COPIES=4 -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_base_EXPORTS -Iinclude -Iggml\src -Iggml\include -Iggml\src\ggml-cpu -Icommon -O3 -DNDEBUG -fPIC -Wshadow -Wstrict-prototypes -Wpointer-arith -Wmissing-prototypes -Werror=implicit-int -Werror=implicit-function-declaration -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wdouble-promotion -std=gnu11 -Illama.cpp/include -Illama.cpp/ggml/src -Illama.cpp/ggml/include -Illama.cpp/ggml/src/ggml-cpu -DGGML_VERSION=\"0.0.5939\" -DGGML_COMMIT=\"f0d4d176\""
-export C_FL2="-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_AARCH64 -DGGML_USE_LLAMAFILE -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS -O3 -DNDEBUG -fPIC -Wshadow -Wstrict-prototypes -Wpointer-arith -Wmissing-prototypes -Werror=implicit-int -Werror=implicit-function-declaration -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wdouble-promotion -march=native -std=gnu11 -Illama.cpp/include -Illama.cpp/ggml/src -Illama.cpp/ggml/include -Illama.cpp/ggml/src/ggml-cpu -Illama.cpp/ggml-cpu"
-export CPP_FL="-DGGML_USE_CPU -DGGML_SCHED_MAX_COPIES=4 -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_base_EXPORTS -Iggml/src -Iinclude -Iggml\src -Iggml\include -Iggml\src\ggml-cpu -Icommon -O3 -DNDEBUG -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -std=gnu++17 -Illama.cpp/include -Illama.cpp/ggml/src -Illama.cpp/ggml/include -Illama.cpp/ggml/src/ggml-cpu -Illama.cpp/common"
-export CPP_FL2="-DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_AARCH64 -DGGML_USE_LLAMAFILE -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS -O3 -DNDEBUG -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -march=native -std=gnu++17 -Illama.cpp/include -Illama.cpp/ggml/src -Illama.cpp/ggml/include -Illama.cpp/ggml/src/ggml-cpu -Illama.cpp/common -Illama.cpp/ggml-cpu"
+export C_FL="-c -Wall -Wunused -DGGML_USE_CPU -DGGML_SCHED_MAX_COPIES=4 -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_base_EXPORTS -Iinclude -Iggml\src -Iggml\include -Iggml\src\ggml-cpu -Icommon -O3 -DNDEBUG -fPIC -Wshadow -Wstrict-prototypes -Wpointer-arith -Wmissing-prototypes -Werror=implicit-int -Werror=implicit-function-declaration -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wdouble-promotion -std=gnu11 -Illama.cpp/include -Illama.cpp -Illama.cpp/ggml-cpu -DGGML_VERSION=\"0.9.7\" -DGGML_COMMIT=\"b6c83aad5\""
+export C_FL2="-c -Wall -Wunused -DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_AARCH64 -DGGML_USE_LLAMAFILE -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS -O3 -DNDEBUG -fPIC -Wshadow -Wstrict-prototypes -Wpointer-arith -Wmissing-prototypes -Werror=implicit-int -Werror=implicit-function-declaration -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wdouble-promotion -march=native -std=gnu11 -Illama.cpp/include -Illama.cpp -Illama.cpp/ggml-cpu"
+export CPP_FL="-c -Wall -Wunused -DGGML_USE_CPU -DGGML_SCHED_MAX_COPIES=4 -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_base_EXPORTS -Iggml/src -O3 -DNDEBUG -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -std=gnu++17 -Illama.cpp/include -Illama.cpp -Illama.cpp/ggml-cpu -Illama.cpp/common"
+export CPP_FL2="-c -Wall -Wunused -DGGML_BACKEND_BUILD -DGGML_BACKEND_SHARED -DGGML_SCHED_MAX_COPIES=4 -DGGML_SHARED -DGGML_USE_CPU_AARCH64 -DGGML_USE_LLAMAFILE -D_GNU_SOURCE -D_XOPEN_SOURCE=600 -Dggml_cpu_EXPORTS -O3 -DNDEBUG -fPIC -Wmissing-declarations -Wmissing-noreturn -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wno-array-bounds -Wextra-semi -march=native -std=gnu++17 -Illama.cpp/include -Illama.cpp -Illama.cpp/common -Illama.cpp/ggml-cpu"
 
-gcc -c -Wall -Wunused $C_FL -I. -o$OBJ/ggml.o llama.cpp/ggml.c
-gcc -c -Wall -Wunused $C_FL -I. -o$OBJ/ggml-alloc.o llama.cpp/ggml-alloc.c
-gcc -c -Wall -Wunused $CPP_FL -I. -o$OBJ/ggml-backend.o llama.cpp/ggml-backend.cpp
-gcc -c -Wall -Wunused $CPP_FL -I. -o$OBJ/ggml-opt.o llama.cpp/ggml-opt.cpp
-gcc -c -Wall -Wunused $CPP_FL -I. -o$OBJ/ggml-threading.o llama.cpp/ggml-threading.cpp
-gcc -c -Wall -Wunused $C_FL -I. -o$OBJ/ggml-quants.o llama.cpp/ggml-quants.c
-gcc -c -Wall -Wunused $CPP_FL -I. -o$OBJ/gguf.o llama.cpp/gguf.cpp
-gcc -c -Wall -Wunused $CPP_FL -I. -o$OBJ/ggml-backend-reg.o llama.cpp/ggml-backend-reg.cpp
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/ggml-cpu2.o llama.cpp/ggml-cpu/ggml-cpu2.cpp
-gcc -c -Wall -Wunused $C_FL2 -I. -o$OBJ/ggml-cpu.o llama.cpp/ggml-cpu/ggml-cpu.c
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/hbm.o llama.cpp/ggml-cpu/hbm.cpp
-gcc -c -Wall -Wunused $C_FL2 -I. -o$OBJ/quants.o llama.cpp/ggml-cpu/quants.c
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/traits.o llama.cpp/ggml-cpu/traits.cpp
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/ops.o llama.cpp/ggml-cpu/ops.cpp
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/vec.o llama.cpp/ggml-cpu/vec.cpp
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/binary-ops.o llama.cpp/ggml-cpu/binary-ops.cpp
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/unary-ops.o llama.cpp/ggml-cpu/unary-ops.cpp
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/amx.o llama.cpp/ggml-cpu/amx/amx.cpp
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/mmq.o llama.cpp/ggml-cpu/amx/mmq.cpp
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/cpu-feats.o llama.cpp/ggml-cpu/arch/x86/cpu-feats.cpp
-gcc -c -Wall -Wunused $C_FL2 -I. -o$OBJ/quants_arch.o llama.cpp/ggml-cpu/arch/x86/quants_arch.c
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/repack.o llama.cpp/ggml-cpu/arch/x86/repack.cpp
-gcc -c -Wall -Wunused $CPP_FL2 -I. -o$OBJ/sgemm.o llama.cpp/ggml-cpu/llamafile/sgemm.cpp
-gcc -c -Wall -Wunused $C_FL2 -I$HRB_DIR/include -I. -o$OBJ/hcommon.o source/hcommon.c
+gcc $C_FL -I. -o$OBJ/ggml.o llama.cpp/ggml.c
+gcc $C_FL -I. -o$OBJ/ggml-alloc.o llama.cpp/ggml-alloc.c
+gcc $CPP_FL -I. -o$OBJ/ggml-backend.o llama.cpp/ggml-backend.cpp
+gcc $CPP_FL -I. -o$OBJ/ggml-backend-dl.o llama.cpp/ggml-backend-dl.cpp
+gcc $CPP_FL -I. -o$OBJ/ggml-backend-reg.o llama.cpp/ggml-backend-reg.cpp
+gcc $CPP_FL -I. -o$OBJ/ggml-opt.o llama.cpp/ggml-opt.cpp
+gcc $C_FL -I. -o$OBJ/ggml-quants.o llama.cpp/ggml-quants.c
+gcc $CPP_FL -I. -o$OBJ/ggml-threading.o llama.cpp/ggml-threading.cpp
+gcc $CPP_FL -I. -o$OBJ/gguf.o llama.cpp/gguf.cpp
+gcc $CPP_FL2 -I. -o$OBJ/ggml-cpu2.o llama.cpp/ggml-cpu/ggml-cpu2.cpp
+gcc $C_FL2 -I. -o$OBJ/ggml-cpu.o llama.cpp/ggml-cpu/ggml-cpu.c
+gcc $CPP_FL2 -I. -o$OBJ/hbm.o llama.cpp/ggml-cpu/hbm.cpp
+gcc $C_FL2 -I. -o$OBJ/quants.o llama.cpp/ggml-cpu/quants.c
+gcc $CPP_FL2 -I. -o$OBJ/traits.o llama.cpp/ggml-cpu/traits.cpp
+gcc $CPP_FL2 -I. -o$OBJ/ops.o llama.cpp/ggml-cpu/ops.cpp
+gcc $CPP_FL2 -I. -o$OBJ/vec.o llama.cpp/ggml-cpu/vec.cpp
+gcc $CPP_FL2 -I. -o$OBJ/binary-ops.o llama.cpp/ggml-cpu/binary-ops.cpp
+gcc $CPP_FL2 -I. -o$OBJ/unary-ops.o llama.cpp/ggml-cpu/unary-ops.cpp
+gcc $CPP_FL2 -I. -o$OBJ/repack.o llama.cpp/ggml-cpu/repack.cpp
+gcc $CPP_FL2 -I. -o$OBJ/amx.o llama.cpp/ggml-cpu/amx/amx.cpp
+gcc $CPP_FL2 -I. -o$OBJ/mmq.o llama.cpp/ggml-cpu/amx/mmq.cpp
+gcc $CPP_FL2 -I. -o$OBJ/cpu-feats.o llama.cpp/ggml-cpu/arch/x86/cpu-feats.cpp
+gcc $C_FL2 -I. -o$OBJ/quants_arch.o llama.cpp/ggml-cpu/arch/x86/quants_arch.c
+gcc $CPP_FL2 -I. -o$OBJ/repack_arch.o llama.cpp/ggml-cpu/arch/x86/repack_arch.cpp
+gcc $CPP_FL2 -I. -o$OBJ/sgemm.o llama.cpp/ggml-cpu/llamafile/sgemm.cpp
+gcc $C_FL2 -I$HRB_DIR/include -I. -o$OBJ/hcommon.o source/hcommon.c
 
 ar rc  lib/libggml.a  $OBJ/*.o
 
 export OBJ=obj/llama/gcc
 
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/cllama.o source/cllama.cpp
-gcc -c -Wall -Wunused  -I$HRB_DIR/include -I. -o$OBJ/hllama.o source/hllama.c
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama.o llama.cpp/llama.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-adapter.o llama.cpp/llama-adapter.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-arch.o llama.cpp/llama-arch.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-batch.o llama.cpp/llama-batch.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-chat.o llama.cpp/llama-chat.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-context.o llama.cpp/llama-context.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-grammar.o llama.cpp/llama-grammar.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-graph.o llama.cpp/llama-graph.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-hparams.o llama.cpp/llama-hparams.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-impl.o llama.cpp/llama-impl.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-io.o llama.cpp/llama-io.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-kv-cache-iswa.o llama.cpp/llama-kv-cache-iswa.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-kv-cache.o llama.cpp/llama-kv-cache.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-memory.o llama.cpp/llama-memory.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-mmap.o llama.cpp/llama-mmap.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-model.o llama.cpp/llama-model.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-model-loader.o llama.cpp/llama-model-loader.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-quant.o llama.cpp/llama-quant.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-sampling.o llama.cpp/llama-sampling.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-vocab.o llama.cpp/llama-vocab.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/unicode.o llama.cpp/unicode.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/unicode-data.o llama.cpp/unicode-data.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-model-saver.o llama.cpp/llama-model-saver.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-memory-recurrent.o llama.cpp/llama-memory-recurrent.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llama-memory-hybrid.o llama.cpp/llama-memory-hybrid.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/build-info.o llama.cpp/common/build-info.cpp
-gcc -c -Wall -Wunused  $CPP_FL -Illama.cpp/include/nlohmann -I. -o$OBJ/arg.o llama.cpp/common/arg.cpp
-gcc -c -Wall -Wunused  $CPP_FL -Illama.cpp/include/nlohmann -I. -o$OBJ/chat.o llama.cpp/common/chat.cpp
-gcc -c -Wall -Wunused  $CPP_FL  -I. -o$OBJ/common.o llama.cpp/common/common.cpp
-gcc -c -Wall -Wunused  $CPP_FL  -I. -o$OBJ/console.o llama.cpp/common/console.cpp
-gcc -c -Wall -Wunused  $CPP_FL -Illama.cpp/include/nlohmann -I. -o$OBJ/chat-parser-xml-toolcall.o llama.cpp/common/chat-parser-xml-toolcall.cpp
-gcc -c -Wall -Wunused  $CPP_FL -Illama.cpp/include/nlohmann -I. -o$OBJ/download.o llama.cpp/common/download.cpp
-gcc -c -Wall -Wunused  $CPP_FL -Illama.cpp/include/nlohmann -I. -o$OBJ/json-schema-to-grammar.o llama.cpp/common/json-schema-to-grammar.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/llguidance.o llama.cpp/common/llguidance.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/log.o llama.cpp/common/log.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/ngram-cache.o llama.cpp/common/ngram-cache.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/sampling.o llama.cpp/common/sampling.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/speculative.o llama.cpp/common/speculative.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/chat-parser.o llama.cpp/common/chat-parser.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/json-partial.o llama.cpp/common/json-partial.cpp
-gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/regex-partial.o llama.cpp/common/regex-partial.cpp
+gcc $CPP_FL -I$HRB_DIR/include -I. -o$OBJ/cllama.o source/cllama.cpp
+gcc $C_FL2  -I$HRB_DIR/include -I. -o$OBJ/hllama.o source/hllama.c
+gcc $CPP_FL -I. -o$OBJ/llama.o llama.cpp/llama.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-adapter.o llama.cpp/llama-adapter.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-arch.o llama.cpp/llama-arch.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-batch.o llama.cpp/llama-batch.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-chat.o llama.cpp/llama-chat.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-context.o llama.cpp/llama-context.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-grammar.o llama.cpp/llama-grammar.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-graph.o llama.cpp/llama-graph.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-hparams.o llama.cpp/llama-hparams.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-impl.o llama.cpp/llama-impl.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-io.o llama.cpp/llama-io.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-kv-cache.o llama.cpp/llama-kv-cache.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-kv-cache-iswa.o llama.cpp/llama-kv-cache-iswa.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-memory.o llama.cpp/llama-memory.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-memory-hybrid-iswa.o llama.cpp/llama-memory-hybrid-iswa.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-mmap.o llama.cpp/llama-mmap.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-model.o llama.cpp/llama-model.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-model-loader.o llama.cpp/llama-model-loader.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-quant.o llama.cpp/llama-quant.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-sampler.o llama.cpp/llama-sampler.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-vocab.o llama.cpp/llama-vocab.cpp
+gcc $CPP_FL -I. -o$OBJ/unicode.o llama.cpp/unicode.cpp
+gcc $CPP_FL -I. -o$OBJ/unicode-data.o llama.cpp/unicode-data.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-model-saver.o llama.cpp/llama-model-saver.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-memory-recurrent.o llama.cpp/llama-memory-recurrent.cpp
+gcc $CPP_FL -I. -o$OBJ/llama-memory-hybrid.o llama.cpp/llama-memory-hybrid.cpp
+
+gcc $CPP_FL -I. -o$OBJ/build-info.o llama.cpp/common/build-info.cpp
+gcc $CPP_FL -Illama.cpp/include/nlohmann -I. -o$OBJ/arg.o llama.cpp/common/arg.cpp
+gcc $CPP_FL -Illama.cpp/include/nlohmann -I. -o$OBJ/chat.o llama.cpp/common/chat.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/chat-auto-parser-generator.o llama.cpp/common/chat-auto-parser-generator.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/chat-auto-parser-helpers.o llama.cpp/common/chat-auto-parser-helpers.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/chat-diff-analyzer.o llama.cpp/common/chat-diff-analyzer.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/chat-peg-parser.o llama.cpp/common/chat-peg-parser.cpp
+gcc $CPP_FL -I. -o$OBJ/common.o llama.cpp/common/common.cpp
+gcc $CPP_FL -I. -o$OBJ/console.o llama.cpp/common/console.cpp
+gcc $CPP_FL -I. -o$OBJ/json-partial.o llama.cpp/common/json-partial.cpp
+gcc $CPP_FL -Illama.cpp/include/nlohmann -I. -o$OBJ/json-schema-to-grammar.o llama.cpp/common/json-schema-to-grammar.cpp
+gcc $CPP_FL -I. -o$OBJ/license.o llama.cpp/common/license.cpp
+gcc $CPP_FL -I. -o$OBJ/llguidance.o llama.cpp/common/llguidance.cpp
+gcc $CPP_FL -I. -o$OBJ/log.o llama.cpp/common/log.cpp
+gcc $CPP_FL -I. -o$OBJ/ngram-cache.o llama.cpp/common/ngram-cache.cpp
+gcc $CPP_FL -I. -o$OBJ/ngram-map.o llama.cpp/common/ngram-map.cpp
+gcc $CPP_FL -I. -o$OBJ/ngram-mod.o llama.cpp/common/ngram-mod.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/peg-parser.o llama.cpp/common/peg-parser.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/preset.o llama.cpp/common/preset.cpp
+gcc $CPP_FL -I. -o$OBJ/reasoning-budget.o llama.cpp/common/reasoning-budget.cpp
+gcc $CPP_FL -I. -o$OBJ/regex-partial.o llama.cpp/common/regex-partial.cpp
+gcc $CPP_FL -I. -o$OBJ/sampling.o llama.cpp/common/sampling.cpp
+gcc $CPP_FL -I. -o$OBJ/speculative.o llama.cpp/common/speculative.cpp
+gcc $CPP_FL -I. -o$OBJ/unicode2.o llama.cpp/common/unicode2.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/caps.o llama.cpp/common/jinja/caps.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/lexer.o llama.cpp/common/jinja/lexer.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/parser.o llama.cpp/common/jinja/parser.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/runtime.o llama.cpp/common/jinja/runtime.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/string.o llama.cpp/common/jinja/string.cpp
+gcc $CPP_FL -Ivendor -I. -o$OBJ/value.o llama.cpp/common/jinja/value.cpp
 
 for file in llama.cpp/models/*.cpp; do
   gcc -c -Wall -Wunused  $CPP_FL -I. -o$OBJ/$(basename "$file" .cpp).o llama.cpp/models/$(basename "$file" .cpp).cpp
 done
 
-ar rc lib/libllama.a  $OBJ/*.o
+ar rc  lib/libllama.a  $OBJ/*.o
 
+export FLAG="-c -Wall -std=c++11 -fPIC -O3 -Wall -Wextra -Wpedantic -Wcast-qual -Wno-unused-function -Wmissing-noreturn -pthread  -march=native -mtune=native -Wno-array-bounds -Wno-format-truncation -Wextra-semi -Iwhisper -Illama.cpp/include -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -DNDEBUG -DLOG_DISABLE_LOGS=1 -xc++ -DWHISPER_VERSION=\"1.7.6\""
 export OBJ=obj/whisper/gcc
-export FLAG="-xc++ -DWHISPER_VERSION=\"1.7.6\" -c -Wall -std=c++11 -fPIC -O3 -pthread  -march=native -mtune=native -Wno-array-bounds -Wno-format-truncation -Wextra-semi -Iwhisper -Illama.cpp/include -D_XOPEN_SOURCE=600 -D_GNU_SOURCE -DNDEBUG -DLOG_DISABLE_LOGS=1 -c -I$HRB_DIR/include -I."
 
-gcc $FLAG -o$OBJ/whisper.o whisper/whisper.cpp
-gcc $FLAG -o$OBJ/common.o whisper/common.cpp
-gcc $FLAG -o$OBJ/grammar-parser.o whisper/grammar-parser.cpp
-gcc $FLAG -o$OBJ/common-ggml.o whisper/common-ggml.cpp
-gcc $FLAG -o$OBJ/common-whisper.o whisper/common-whisper.cpp
-gcc $FLAG -o$OBJ/hwhisper.o source/hwhisper.cpp
+gcc $FLAG -I. -o$OBJ/whisper.o whisper/whisper.cpp
+gcc $FLAG -I. -o$OBJ/common.o whisper/common.cpp
+gcc $FLAG -I. -o$OBJ/grammar-parser.o whisper/grammar-parser.cpp
+gcc $FLAG -I. -o$OBJ/common-ggml.o whisper/common-ggml.cpp
+gcc $FLAG -I. -o$OBJ/common-whisper.o whisper/common-whisper.cpp
+gcc $FLAG -I$HRB_DIR/include -I. -o$OBJ/hwhisper.o source/hwhisper.cpp
 
 ar rc  lib/libwhisper.a  $OBJ/*.o
 ```
